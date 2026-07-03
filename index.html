@@ -467,7 +467,7 @@
       <button class="btn btn-ghost" onclick="addObserver()" style="width:100%;justify-content:center;border-style:dashed;margin-top:4px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add Observer
       </button>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:8px;text-align:center"><span id="observer-count-label">2 observers</span></div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:8px;text-align:center"><span id="observer-count-label">1 observer</span></div>
     </div>
   </div>
 
@@ -969,13 +969,13 @@ async function startNewEntry() {
   document.getElementById('observers-container').innerHTML = '';
   observerCount = 0;
   await launchModule(mod);
-  if (mod === 2) { addObserver(); addObserver(); }
+  if (mod === 2) { addObserver(); }
 }
 
 /* ── Init ──────────────────────────────────────────────────── */
 renderHome();
 document.getElementById('vote-dise').innerHTML = voteTable('dise');
-addObserver(); addObserver();
+addObserver();
 </script>
 </body>
 </html>
