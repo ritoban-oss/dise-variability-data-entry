@@ -8,27 +8,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --indigo:      #16194a;
-      --indigo-mid:  #23276e;
-      --purple:      #6d28d9;
-      --purple-lt:   #a78bfa;
-      --purple-pale: #f5f3ff;
-      --bg:          #eef0f8;
-      --surface:     #ffffff;
-      --border:      #cdd0e4;
-      --text:        #1a1a3e;
-      --muted:       #6b6b9a;
-      --label:       #3d3d7a;
-      --coral:       #e05252;
-      --green:       #059669;
-      --green-pale:  #ecfdf5;
-      --amber:       #d97706;
-      --amber-pale:  #fffbeb;
+      --indigo:      #16194a; --indigo-mid: #23276e;
+      --purple:      #6d28d9; --purple-lt:  #a78bfa; --purple-pale: #f5f3ff;
+      --bg:          #eef0f8; --surface: #ffffff; --border: #cdd0e4;
+      --text:        #1a1a3e; --muted: #6b6b9a; --label: #3d3d7a;
+      --coral:       #e05252; --green: #059669; --green-pale: #ecfdf5;
+      --amber:       #d97706; --amber-pale: #fffbeb;
       --font-head: 'Cormorant Garamond', Georgia, serif;
       --font-body: 'Karla', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       --radius-sm: 6px; --radius: 10px; --radius-lg: 16px;
-      --shadow: 0 2px 12px rgba(22,25,74,.10), 0 1px 3px rgba(22,25,74,.06);
+      --shadow: 0 2px 12px rgba(22,25,74,.10),0 1px 3px rgba(22,25,74,.06);
       --shadow-lg: 0 8px 32px rgba(22,25,74,.15);
       --trans: 200ms cubic-bezier(.4,0,.2,1);
     }
@@ -36,8 +26,8 @@
     html{font-size:16px;scroll-behavior:smooth}
     body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 
-    /* ── Header ── */
-    .app-header{background:linear-gradient(135deg,var(--indigo) 0%,var(--indigo-mid) 55%,#2e2a7a 100%);padding:0 32px;position:relative;overflow:hidden;min-height:72px;display:flex;align-items:stretch}
+    /* Header */
+    .app-header{background:linear-gradient(135deg,var(--indigo) 0%,var(--indigo-mid) 55%,#2e2a7a 100%);padding:0 32px;position:relative;overflow:hidden;display:flex;align-items:stretch}
     .app-header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23a78bfa' fill-opacity='0.04'%3E%3Ccircle cx='40' cy='40' r='2'/%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='80' cy='0' r='2'/%3E%3Ccircle cx='0' cy='80' r='2'/%3E%3Ccircle cx='80' cy='80' r='2'/%3E%3C/g%3E%3C/svg%3E")}
     .header-inner{position:relative;max-width:900px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0}
     .header-title{display:flex;flex-direction:column;gap:3px}
@@ -46,28 +36,27 @@
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
     .app-header h1{font-family:var(--font-head);font-size:clamp(17px,2.4vw,22px);font-weight:500;color:#fff;letter-spacing:-.01em;line-height:1.2}
     .app-header h1 em{color:var(--purple-lt);font-style:italic}
+    .header-module-label{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.04em;text-transform:uppercase;margin-top:2px;display:none}
+    .header-module-label.show{display:block}
     .btn-home-back{display:none;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-family:var(--font-body);font-size:13px;padding:6px 14px;border-radius:var(--radius-sm);cursor:pointer;transition:var(--trans);flex-shrink:0}
     .btn-home-back:hover{background:rgba(255,255,255,.2);color:#fff}
     .btn-home-back.show{display:flex}
-    .header-module-label{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.04em;text-transform:uppercase;margin-top:2px;display:none}
-    .header-module-label.show{display:block}
 
-    /* ── Progress track ── */
-    .progress-track{background:rgba(255,255,255,.05);overflow:hidden;display:flex;gap:0}
-    .prog-step{flex:1;padding:7px 4px 8px;font-size:9.5px;font-family:var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.3);text-align:center;cursor:default;transition:var(--trans);border-bottom:2px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .prog-step.done{color:var(--purple-lt);border-color:var(--purple);background:rgba(109,40,217,.1)}
+    /* Progress */
+    .prog-track-wrap{background:linear-gradient(135deg,var(--indigo) 0%,var(--indigo-mid) 55%,#2e2a7a 100%)}
+    .progress-track{max-width:900px;margin:0 auto;display:none;flex-direction:row}
+    .prog-step{flex:1;padding:7px 4px 8px;font-size:9.5px;font-family:var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.3);text-align:center;transition:var(--trans);border-bottom:2px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .prog-step.done{color:var(--purple-lt);border-color:var(--purple);background:rgba(109,40,217,.1);cursor:pointer}
+    .prog-step.done:hover{color:rgba(255,255,255,.65)}
     .prog-step.active{color:#fff;border-color:var(--purple-lt);background:rgba(109,40,217,.18);font-weight:500}
-    .prog-step.clickable{cursor:pointer}
-    .prog-step.clickable:hover:not(.active){color:rgba(255,255,255,.65)}
 
-    /* ── Main ── */
+    /* Main */
     .main{max-width:900px;margin:0 auto;padding:28px 20px 120px}
 
-    /* ── HOME SCREEN ── */
-    #home-screen{}
+    /* Home */
     .home-title{text-align:center;margin-bottom:32px}
     .home-title h2{font-family:var(--font-head);font-size:28px;font-weight:500;color:var(--indigo);margin-bottom:6px}
-    .home-title p{color:var(--muted);font-size:14px;max-width:480px;margin:0 auto}
+    .home-title p{color:var(--muted);font-size:14px;max-width:480px;margin:0 auto;line-height:1.6}
     .module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     @media(max-width:680px){.module-grid{grid-template-columns:1fr 1fr}}
     @media(max-width:440px){.module-grid{grid-template-columns:1fr}}
@@ -81,7 +70,7 @@
     .badge-amber{background:var(--amber-pale);color:var(--amber);border:1px solid #fde68a}
     .module-card-num{position:absolute;top:14px;right:16px;font-family:var(--font-mono);font-size:11px;color:var(--border);font-weight:500}
 
-    /* ── MODULE SCREEN ── */
+    /* Module screen */
     #module-screen{display:none}
     .step-panel{display:none;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden;animation:fadeSlide .25s ease}
     .step-panel.active{display:block}
@@ -92,7 +81,7 @@
     .section-head p{font-size:12.5px;color:var(--muted);margin-top:1px}
     .section-body{padding:26px 28px 20px}
 
-    /* ── ID Entry panel ── */
+    /* ID entry */
     .id-entry-wrap{display:flex;flex-direction:column;align-items:center;padding:48px 24px;gap:24px}
     .id-entry-wrap h2{font-family:var(--font-head);font-size:22px;color:var(--indigo);text-align:center}
     .id-entry-wrap p{font-size:14px;color:var(--muted);text-align:center;max-width:360px;line-height:1.6}
@@ -108,18 +97,15 @@
     .id-status.warn{background:var(--amber-pale);color:var(--amber)}
     .id-status.err{background:#fff1f2;color:var(--coral)}
 
-    /* ── Study ID Banner (M1) ── */
+    /* Study ID banner */
     .study-id-banner{background:var(--purple-pale);border:1.5px solid #ddd6fe;border-radius:var(--radius);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
     .study-id-banner .label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--purple)}
     .study-id-banner .id-val{font-family:var(--font-mono);font-size:22px;letter-spacing:.12em;color:var(--indigo);font-weight:500}
     .btn-copy{background:none;border:1px solid var(--purple);color:var(--purple);font-family:var(--font-mono);font-size:11px;padding:4px 10px;border-radius:4px;cursor:pointer;transition:var(--trans)}
     .btn-copy:hover{background:var(--purple);color:#fff}
+    .dise-banner{display:flex;align-items:center;gap:12px;background:var(--purple-pale);border:1px solid #ddd6fe;border-radius:var(--radius);padding:10px 16px;margin-bottom:20px;font-family:var(--font-mono);font-size:11.5px;color:var(--purple)}
 
-    /* ── Session banner ── */
-    .session-banner{display:flex;align-items:center;gap:12px;background:var(--purple-pale);border:1px solid #ddd6fe;border-radius:var(--radius);padding:10px 16px;margin-bottom:20px;font-family:var(--font-mono);font-size:11.5px;color:var(--purple)}
-    .session-banner strong{font-size:14px}
-
-    /* ── Field grid ── */
+    /* Fields */
     .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px}
     .field-grid.three-col{grid-template-columns:1fr 1fr 1fr}
     @media(max-width:600px){.field-grid,.field-grid.three-col{grid-template-columns:1fr}}
@@ -132,8 +118,6 @@
     .field-hint{font-size:11.5px;color:var(--muted);margin-top:-2px}
     .field-divider{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0}
     .field-section-label{grid-column:1/-1;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);font-weight:500;padding-top:4px}
-
-    /* ── Inputs ── */
     input[type=text],input[type=number],input[type=date],input[type=time],input[type=datetime-local],select,textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font-body);font-size:14px;color:var(--text);background:#fafcff;transition:border-color var(--trans),box-shadow var(--trans);appearance:none;-webkit-appearance:none}
     input:focus,select:focus,textarea:focus{outline:none;border-color:var(--purple);background:#fff;box-shadow:0 0 0 3px rgba(109,40,217,.12)}
     textarea{resize:vertical;min-height:72px}
@@ -141,14 +125,12 @@
     input[type=number]{font-family:var(--font-mono)}
     .calc-badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--purple);font-family:var(--font-mono);background:var(--purple-pale);padding:2px 7px;border-radius:4px;margin-top:4px}
 
-    /* ── Toggle ── */
+    /* Toggles */
     .toggle-group{display:flex;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:#fafcff}
     .toggle-group input[type=radio]{display:none}
     .toggle-group label{flex:1;text-align:center;padding:8px 10px;font-size:13px;font-weight:500;cursor:pointer;transition:var(--trans);color:var(--muted);border-right:1px solid var(--border);font-family:var(--font-body)}
     .toggle-group label:last-of-type{border-right:none}
     .toggle-group input:checked+label{background:var(--purple);color:#fff}
-
-    /* ── Degree toggle ── */
     .degree-toggle{display:flex;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:#fafcff}
     .degree-toggle input[type=radio]{display:none}
     .degree-toggle label{flex:1;text-align:center;padding:6px 8px;font-size:13px;font-weight:600;cursor:pointer;transition:var(--trans);color:var(--muted);border-right:1px solid var(--border);font-family:var(--font-mono)}
@@ -157,17 +139,17 @@
     .degree-toggle input[value="1"]:checked+label{background:#fef3c7;color:#92400e}
     .degree-toggle input[value="2"]:checked+label{background:#fee2e2;color:#991b1b}
 
-    /* ── Checkbox grid ── */
+    /* Checkboxes */
     .checkbox-grid{display:flex;flex-wrap:wrap;gap:8px}
     .checkbox-item{display:flex;align-items:center;gap:6px}
-    .checkbox-item input[type=checkbox]{width:16px;height:16px;border:1.5px solid var(--border);border-radius:4px;appearance:auto;accent-color:var(--purple)}
+    .checkbox-item input[type=checkbox]{width:16px;height:16px;appearance:auto;accent-color:var(--purple)}
     .checkbox-item label{font-size:13px;color:var(--text);cursor:pointer}
 
-    /* ── Conditional ── */
+    /* Conditional */
     .conditional{display:none}
     .conditional.show{display:contents}
 
-    /* ── VOTE table ── */
+    /* VOTE table */
     .vote-wrapper{grid-column:1/-1}
     .vote-table{width:100%;border-collapse:separate;border-spacing:0;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden}
     .vote-table th{background:#f0eeff;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--label);padding:8px 10px;text-align:center;border-bottom:1.5px solid var(--border);font-weight:500}
@@ -181,24 +163,24 @@
     .pos-separator{width:1px;background:var(--border);padding:0!important}
     .pos-header{background:#e8e3ff!important}
 
-    /* ── Video metadata card ── */
+    /* Video card */
     .video-card{grid-column:1/-1;background:#f7f8fc;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 18px}
     .video-card-head{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);font-weight:500;margin-bottom:14px}
 
-    /* ── Observer block ── */
+    /* Observer block */
     .observer-block{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
     .observer-block-head{background:#f0eeff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--purple);font-weight:500}
     .remove-obs{background:none;border:1px solid #ddd6fe;color:var(--muted);border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:var(--font-mono);transition:var(--trans)}
     .remove-obs:hover{background:#fee2e2;border-color:#fca5a5;color:var(--coral)}
     .observer-block-body{padding:16px 16px 12px}
 
-    /* ── Alert ── */
+    /* Alerts */
     .alert{padding:12px 16px;border-radius:var(--radius-sm);font-size:13px;display:flex;align-items:flex-start;gap:10px;margin-bottom:16px}
     .alert-info{background:var(--purple-pale);border:1px solid #ddd6fe;color:#4c1d95}
     .alert-warn{background:var(--amber-pale);border:1px solid #fde68a;color:#78350f}
     .alert-note{background:var(--green-pale);border:1px solid #bbf7d0;color:#14532d}
 
-    /* ── Summary / Review ── */
+    /* Summary */
     .summary-section{margin-bottom:20px}
     .summary-section h3{font-family:var(--font-head);font-size:15px;font-weight:500;color:var(--indigo);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
     .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px}
@@ -208,7 +190,7 @@
     .summary-item .s-value{font-size:13px;color:var(--text);text-align:right;font-weight:500}
     .summary-item .s-value.empty{color:#b0b4c8;font-weight:400;font-style:italic}
 
-    /* ── Success screen ── */
+    /* Success */
     #success-screen{display:none;min-height:60vh;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:60px 24px}
     #success-screen.show{display:flex}
     .success-icon{width:72px;height:72px;background:var(--purple-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:24px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
@@ -220,7 +202,7 @@
     .success-id-box .id{font-family:var(--font-mono);font-size:36px;letter-spacing:.18em;color:var(--indigo);font-weight:500}
     .success-id-box .note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
 
-    /* ── Nav bar ── */
+    /* Nav */
     .nav-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:100;box-shadow:0 -4px 20px rgba(22,25,74,.08)}
     .nav-bar.hidden{display:none}
     .nav-info{font-size:12px;color:var(--muted);font-family:var(--font-mono)}
@@ -241,7 +223,7 @@
 </head>
 <body>
 
-<!-- ═══ Header ══════════════════════════════════════════════════ -->
+<!-- Header -->
 <header class="app-header">
   <div class="header-inner">
     <div class="header-title">
@@ -255,57 +237,50 @@
     </button>
   </div>
 </header>
-
-<!-- Progress track (inside header visually, below it in DOM) -->
-<div style="background:linear-gradient(135deg,var(--indigo) 0%,var(--indigo-mid) 55%,#2e2a7a 100%)">
-  <div style="max-width:900px;margin:0 auto">
-    <div class="progress-track" id="progressTrack" style="display:none"></div>
-  </div>
+<div class="prog-track-wrap">
+  <div class="progress-track" id="progressTrack"></div>
 </div>
 
-<!-- ═══ Main ════════════════════════════════════════════════════ -->
+<!-- Main -->
 <main class="main">
 
-<!-- ── Home Screen ───────────────────────────────────────────── -->
+<!-- Home -->
 <div id="home-screen">
   <div class="home-title">
     <h2>Select a Data Entry Module</h2>
-    <p>Complete Module 1 first to generate a Study ID, then share it with colleagues for Modules 2–5.</p>
+    <p>Complete Module 1 (DISE) first to generate a Study ID, then share it with colleagues for Observer Scoring and Consensus.</p>
   </div>
   <div class="module-grid" id="moduleGrid"></div>
 </div>
 
-<!-- ── Module Screen ─────────────────────────────────────────── -->
+<!-- Module screen -->
 <div id="module-screen">
 
-  <!-- Shared ID Entry panel (step 0 for modules 2–5) -->
+  <!-- Shared ID Entry (Modules 2–3, step 0) -->
   <div class="step-panel" id="id-entry-panel">
     <div class="id-entry-wrap">
       <div style="font-size:40px" id="idEntryIcon">🔑</div>
       <h2>Enter Study ID</h2>
-      <p id="idEntryDesc">Enter the 8-digit Study ID generated during Patient Baseline registration.</p>
+      <p>Enter the 8-digit Study ID generated during Module 1 (Patient Baseline &amp; DISE).</p>
       <div class="id-input-row">
-        <input type="text" id="entered_study_id" maxlength="8" pattern="[0-9]{8}"
-               placeholder="00000000" oninput="onStudyIdInput()" onkeydown="if(event.key==='Enter')validateStudyId()" />
+        <input type="text" id="entered_study_id" maxlength="8" pattern="[0-9]{8}" placeholder="00000000"
+               oninput="onStudyIdInput()" onkeydown="if(event.key==='Enter')validateStudyId()" />
         <button class="btn btn-primary" id="validateBtn" onclick="validateStudyId()" style="white-space:nowrap">Validate</button>
       </div>
       <div class="id-status" id="idStatus"></div>
-      <button class="btn btn-primary" id="idContinueBtn" onclick="proceedAfterValidation()" style="display:none;margin-top:4px">
-        Continue →
-      </button>
+      <button class="btn btn-primary" id="idContinueBtn" onclick="proceedAfterValidation()" style="display:none;margin-top:4px">Continue →</button>
     </div>
   </div>
 
-  <!-- ── MODULE 1: Patient Baseline ────────────────────────── -->
+  <!-- ═══ MODULE 1: Patient Baseline & DISE ═════════════════ -->
 
-  <!-- M1 Step 0: Screening & Eligibility -->
+  <!-- M1 Step 0: Screening -->
   <div class="step-panel" data-module="1" data-step="0">
     <div class="section-head"><div class="section-icon">📋</div>
-      <div><h2>Screening &amp; Eligibility</h2><p>Patient identification, eligibility, and consent</p></div>
+      <div><h2>Screening &amp; Eligibility</h2><p>Patient identification, eligibility criteria, and consent</p></div>
     </div>
     <div class="section-body">
-      <!-- Study ID banner -->
-      <div class="study-id-banner" id="m1IdBanner">
+      <div class="study-id-banner">
         <div><div class="label">Generated Study ID</div><div class="id-val" id="m1IdDisplay">—</div></div>
         <button class="btn-copy" onclick="copyStudyId()">Copy</button>
       </div>
@@ -318,7 +293,7 @@
         <div class="field"><label>Date of Birth</label><input type="date" id="dob" /></div>
         <div class="field conditional" id="pregnancy_field" style="display:none">
           <label>Pregnancy Status</label>
-          <div class="toggle-group"><input type="radio" name="pregnancy" id="preg_yes" value="Yes"><label for="preg_yes">Yes</label><input type="radio" name="pregnancy" id="preg_no" value="No"><label for="preg_no">No</label><input type="radio" name="pregnancy" id="preg_na" value="N/A"><label for="preg_na">N/A</label></div>
+          <div class="toggle-group"><input type="radio" name="pregnancy" id="preg_y" value="Yes"><label for="preg_y">Yes</label><input type="radio" name="pregnancy" id="preg_n" value="No"><label for="preg_n">No</label><input type="radio" name="pregnancy" id="preg_na" value="N/A"><label for="preg_na">N/A</label></div>
         </div>
         <div class="field-divider"></div>
         <div class="field-section-label">Eligibility</div>
@@ -335,14 +310,14 @@
           <select id="referral_indication"><option value="">— Select —</option><option>Upper Airway Surgery Evaluation</option><option>Oral Appliance Evaluation</option><option>Hypoglossal Nerve Stimulation (HGNS)</option><option>Combined / Multiple</option></select>
         </div>
         <div class="field field-span-2"><label>Prior Upper Airway Surgery?</label>
-          <div class="toggle-group"><input type="radio" name="prior_uaw" id="uaw_y" value="Yes" onchange="toggleEl('uaw_details_field',this.value==='Yes')"><label for="uaw_y">Yes</label><input type="radio" name="prior_uaw" id="uaw_n" value="No" onchange="toggleEl('uaw_details_field',false)"><label for="uaw_n">No</label></div>
+          <div class="toggle-group"><input type="radio" name="prior_uaw" id="uaw_y" value="Yes" onchange="toggleEl('uaw_details_field',true)"><label for="uaw_y">Yes</label><input type="radio" name="prior_uaw" id="uaw_n" value="No" onchange="toggleEl('uaw_details_field',false)"><label for="uaw_n">No</label></div>
         </div>
         <div class="conditional field-span-2" id="uaw_details_field"><div class="field"><label>UAW Surgery Details</label><input type="text" id="uaw_surgery_details" placeholder="Procedure, year…" /></div></div>
         <div class="field field-span-2"><label>Current URTI Symptoms?</label>
           <div class="toggle-group"><input type="radio" name="current_urti" id="urti_y" value="Yes"><label for="urti_y">Yes</label><input type="radio" name="current_urti" id="urti_n" value="No"><label for="urti_n">No</label></div>
         </div>
         <div class="field field-span-2"><label>Sedative Drug Allergy / Hypersensitivity?</label>
-          <div class="toggle-group"><input type="radio" name="sed_allergy" id="allergy_y" value="Yes" onchange="toggleEl('allergy_details_field',this.value==='Yes')"><label for="allergy_y">Yes</label><input type="radio" name="sed_allergy" id="allergy_n" value="No" onchange="toggleEl('allergy_details_field',false)"><label for="allergy_n">No</label></div>
+          <div class="toggle-group"><input type="radio" name="sed_allergy" id="allergy_y" value="Yes" onchange="toggleEl('allergy_details_field',true)"><label for="allergy_y">Yes</label><input type="radio" name="sed_allergy" id="allergy_n" value="No" onchange="toggleEl('allergy_details_field',false)"><label for="allergy_n">No</label></div>
         </div>
         <div class="conditional field-span-2" id="allergy_details_field"><div class="field"><label>Allergy Details</label><input type="text" id="sed_allergy_details" placeholder="Agent, reaction type…" /></div></div>
       </div>
@@ -390,7 +365,7 @@
         </div>
         <div class="field field-span-2"><label>Other Comorbidity Details</label><input type="text" id="comorbidity_other" placeholder="Specify…" /></div>
         <div class="field-divider"></div>
-        <div class="field field-span-2"><label>Current Medications <span class="unit">especially sedatives, muscle relaxants, antihypertensives</span></label><textarea id="medications" placeholder="List medications, doses…"></textarea></div>
+        <div class="field field-span-2"><label>Current Medications <span class="unit">especially sedatives, muscle relaxants, antihypertensives</span></label><textarea id="medications" placeholder="List medications and doses…"></textarea></div>
         <div class="field"><label>Smoking History</label><select id="smoking"><option value="">— Select —</option><option>Never</option><option>Ex-smoker</option><option>Current smoker</option></select></div>
         <div class="field"><label>Alcohol History</label><select id="alcohol"><option value="">— Select —</option><option>Never</option><option>Occasional</option><option>Regular</option></select></div>
       </div>
@@ -410,211 +385,134 @@
         <div class="field"><label>PSG to DISE <span class="unit">(days)</span></label><input type="number" id="psg_to_dise_days" placeholder="—" min="0" max="3650" /></div>
         <div class="field-divider"></div>
         <div class="field-section-label">Position &amp; Stage Distribution</div>
-        <div class="field"><label>Supine AHI <span class="unit">(events/hr)</span></label><input type="number" id="supine_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
-        <div class="field"><label>Non-supine AHI <span class="unit">(events/hr)</span></label><input type="number" id="nonsupine_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
-        <div class="field"><label>REM AHI <span class="unit">(events/hr)</span></label><input type="number" id="rem_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
-        <div class="field"><label>NREM AHI <span class="unit">(events/hr)</span></label><input type="number" id="nrem_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
+        <div class="field"><label>Supine AHI</label><input type="number" id="supine_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
+        <div class="field"><label>Non-supine AHI</label><input type="number" id="nonsupine_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
+        <div class="field"><label>REM AHI</label><input type="number" id="rem_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
+        <div class="field"><label>NREM AHI</label><input type="number" id="nrem_ahi" placeholder="—" min="0" max="200" step="0.1" /></div>
       </div>
     </div>
   </div>
 
-  <!-- M1 Step 4: Review -->
+  <!-- M1 Step 4: DISE Procedure -->
   <div class="step-panel" data-module="1" data-step="4">
-    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>Patient Baseline — verify before submitting to <strong>Patient Baseline</strong> tab</p></div></div>
+    <div class="section-head"><div class="section-icon">🔬</div>
+      <div><h2>DISE Session — Procedural Data</h2><p>Sedation parameters, adverse events, and positional data</p></div>
+    </div>
+    <div class="section-body">
+      <div class="dise-banner">🟣 <div><strong>DISE Session</strong> &nbsp;·&nbsp; Study ID: <span id="m1DiseIdDisplay">—</span></div></div>
+      <div class="field-grid">
+        <div class="field"><label>Date <span class="req">*</span></label><input type="date" id="dise_date" /></div>
+        <div class="field"><label>Start Time</label><input type="time" id="dise_time" /></div>
+        <div class="field"><label>Sedative Agent</label>
+          <select id="dise_sedative_agent"><option value="">— Select —</option><option>Propofol</option><option>Dexmedetomidine</option><option>Midazolam</option><option>Midazolam + Propofol</option><option>Propofol + Dexmedetomidine</option><option>Other</option></select>
+        </div>
+        <div class="field"><label>Sedative Dose / Titration</label><input type="text" id="dise_sedative_dose" placeholder="e.g. 1.5 mg/kg TCI" /></div>
+        <div class="field"><label>Target BIS</label><input type="number" id="dise_target_bis" placeholder="—" min="0" max="100" /></div>
+        <div class="field"><label>Achieved BIS <span class="unit">(mean)</span></label><input type="number" id="dise_achieved_bis" placeholder="—" min="0" max="100" step="0.1" /></div>
+        <div class="field"><label>Time to Target <span class="unit">(min)</span></label><input type="number" id="dise_time_to_target" placeholder="—" min="0" max="60" step="0.5" /></div>
+        <div class="field"><label>Duration <span class="unit">(min)</span></label><input type="number" id="dise_duration" placeholder="—" min="0" max="120" step="0.5" /></div>
+        <div class="field-divider"></div>
+        <div class="field-section-label">Adverse Events</div>
+        <div class="field"><label>Oxygen Desaturation?</label><div class="toggle-group"><input type="radio" name="dise_desat" id="desat_y" value="Yes"><label for="desat_y">Yes</label><input type="radio" name="dise_desat" id="desat_n" value="No"><label for="desat_n">No</label></div></div>
+        <div class="field"><label>Airway Obstruction?</label><div class="toggle-group"><input type="radio" name="dise_airway" id="airway_y" value="Yes"><label for="airway_y">Yes</label><input type="radio" name="dise_airway" id="airway_n" value="No"><label for="airway_n">No</label></div></div>
+        <div class="field"><label>Haemodynamic Instability?</label><div class="toggle-group"><input type="radio" name="dise_haemo" id="haemo_y" value="Yes"><label for="haemo_y">Yes</label><input type="radio" name="dise_haemo" id="haemo_n" value="No"><label for="haemo_n">No</label></div></div>
+        <div class="field-divider"></div>
+        <div class="field-section-label">Positional Data</div>
+        <div class="field"><label>Supine Examined?</label><div class="toggle-group"><input type="radio" name="dise_supine" id="sup_y" value="Yes"><label for="sup_y">Yes</label><input type="radio" name="dise_supine" id="sup_n" value="No"><label for="sup_n">No</label></div></div>
+        <div class="field"><label>Supine Duration <span class="unit">(min)</span></label><input type="number" id="dise_supine_duration" placeholder="—" min="0" max="60" step="0.5" /></div>
+        <div class="field"><label>Lateral Examined?</label><div class="toggle-group"><input type="radio" name="dise_lateral" id="lat_y" value="Yes"><label for="lat_y">Yes</label><input type="radio" name="dise_lateral" id="lat_n" value="No"><label for="lat_n">No</label></div></div>
+        <div class="field"><label>Lateral Duration <span class="unit">(min)</span></label><input type="number" id="dise_lateral_duration" placeholder="—" min="0" max="60" step="0.5" /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M1 Step 5: DISE VOTE -->
+  <div class="step-panel" data-module="1" data-step="5">
+    <div class="section-head"><div class="section-icon">👁</div>
+      <div><h2>DISE VOTE Classification</h2><p>Endoscopic collapse scoring per structure and position</p></div>
+    </div>
+    <div class="section-body">
+      <div class="dise-banner" style="background:#fdf4ff;border-color:#e9d5ff;">🟣 <div><strong>VOTE Classification</strong> &nbsp;·&nbsp; 0 = none · 1 = partial · 2 = complete</div></div>
+      <div class="field-grid">
+        <div class="vote-wrapper" id="vote-dise"></div>
+        <div class="field field-span-2"><label>Additional Structures Beyond VOTE</label><input type="text" id="additional_structures" placeholder="e.g. Nasal: partial collapse; Hypopharynx: complete AP…" /></div>
+        <div class="video-card">
+          <div class="video-card-head">📹 Video Metadata</div>
+          <div class="field-grid three-col">
+            <div class="field"><label>Video File ID</label><input type="text" id="video_id" placeholder="e.g. V-DISE-001" /></div>
+            <div class="field"><label>Video Quality</label><div class="toggle-group"><input type="radio" name="video_quality" id="vq_ok" value="Adequate"><label for="vq_ok">Adequate</label><input type="radio" name="video_quality" id="vq_poor" value="Inadequate"><label for="vq_poor">Inadequate</label></div></div>
+            <div class="field"><label>Timestamp Markers</label><input type="text" id="timestamp_markers" placeholder="e.g. 00:45 Velum; 01:30 Tongue…" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M1 Step 6: Review -->
+  <div class="step-panel" data-module="1" data-step="6">
+    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>DISE — verify before submitting to <strong>DISE</strong> tab</p></div></div>
     <div class="section-body"><div id="review-m1"></div></div>
   </div>
 
-  <!-- ── MODULE 2: Session 1 ──────────────────────────────── -->
+  <!-- ═══ MODULE 2: Observer Scoring ════════════════════════ -->
 
-  <!-- M2 Step 1: Session 1 Procedure -->
+  <!-- M2 Step 1: Observers -->
   <div class="step-panel" data-module="2" data-step="1">
-    <div class="section-head"><div class="section-icon">🔬</div>
-      <div><h2>Session 1 — Procedural Data</h2><p>Sedation parameters, positional data, adverse events</p></div>
-    </div>
-    <div class="section-body">
-      <div class="session-banner">🟣 <div><strong>Session 1</strong> &nbsp;·&nbsp; Study ID: <span class="active-id-display"></span></div></div>
-      <div class="field-grid">
-        <div class="field"><label>Session Date <span class="req">*</span></label><input type="date" id="s1_date" /></div>
-        <div class="field"><label>Session Start Time</label><input type="time" id="s1_time" /></div>
-        <div class="field"><label>Sedative Agent</label><select id="s1_sedative_agent"><option value="">— Select —</option><option>Propofol</option><option>Dexmedetomidine</option><option>Midazolam</option><option>Midazolam + Propofol</option><option>Propofol + Dexmedetomidine</option><option>Other</option></select></div>
-        <div class="field"><label>Sedative Dose / Titration</label><input type="text" id="s1_sedative_dose" placeholder="e.g. 1.5 mg/kg TCI" /></div>
-        <div class="field"><label>Target BIS</label><input type="number" id="s1_target_bis" placeholder="—" min="0" max="100" /></div>
-        <div class="field"><label>Achieved BIS <span class="unit">(mean)</span></label><input type="number" id="s1_achieved_bis" placeholder="—" min="0" max="100" step="0.1" /></div>
-        <div class="field"><label>Time to Target <span class="unit">(min)</span></label><input type="number" id="s1_time_to_target" placeholder="—" min="0" max="60" step="0.5" /></div>
-        <div class="field"><label>Duration <span class="unit">(min)</span></label><input type="number" id="s1_duration" placeholder="—" min="0" max="120" step="0.5" /></div>
-        <div class="field-divider"></div>
-        <div class="field-section-label">Adverse Events</div>
-        <div class="field"><label>Oxygen Desaturation?</label><div class="toggle-group"><input type="radio" name="s1_desat" id="s1_desat_y" value="Yes"><label for="s1_desat_y">Yes</label><input type="radio" name="s1_desat" id="s1_desat_n" value="No"><label for="s1_desat_n">No</label></div></div>
-        <div class="field"><label>Airway Obstruction?</label><div class="toggle-group"><input type="radio" name="s1_airway" id="s1_airway_y" value="Yes"><label for="s1_airway_y">Yes</label><input type="radio" name="s1_airway" id="s1_airway_n" value="No"><label for="s1_airway_n">No</label></div></div>
-        <div class="field"><label>Haemodynamic Instability?</label><div class="toggle-group"><input type="radio" name="s1_haemo" id="s1_haemo_y" value="Yes"><label for="s1_haemo_y">Yes</label><input type="radio" name="s1_haemo" id="s1_haemo_n" value="No"><label for="s1_haemo_n">No</label></div></div>
-        <div class="field-divider"></div>
-        <div class="field-section-label">Positional Data</div>
-        <div class="field"><label>Supine Examined?</label><div class="toggle-group"><input type="radio" name="s1_supine" id="s1_sup_y" value="Yes"><label for="s1_sup_y">Yes</label><input type="radio" name="s1_supine" id="s1_sup_n" value="No"><label for="s1_sup_n">No</label></div></div>
-        <div class="field"><label>Supine Duration <span class="unit">(min)</span></label><input type="number" id="s1_supine_duration" placeholder="—" min="0" max="60" step="0.5" /></div>
-        <div class="field"><label>Lateral Examined?</label><div class="toggle-group"><input type="radio" name="s1_lateral" id="s1_lat_y" value="Yes"><label for="s1_lat_y">Yes</label><input type="radio" name="s1_lateral" id="s1_lat_n" value="No"><label for="s1_lat_n">No</label></div></div>
-        <div class="field"><label>Lateral Duration <span class="unit">(min)</span></label><input type="number" id="s1_lateral_duration" placeholder="—" min="0" max="60" step="0.5" /></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- M2 Step 2: Session 1 VOTE -->
-  <div class="step-panel" data-module="2" data-step="2">
-    <div class="section-head"><div class="section-icon">👁</div>
-      <div><h2>Session 1 — VOTE Classification</h2><p>Collapse scoring per structure and position</p></div>
-    </div>
-    <div class="section-body">
-      <div class="session-banner" style="background:#fdf4ff;border-color:#e9d5ff;">🟣 <div><strong>Session 1 VOTE</strong> &nbsp;·&nbsp; Study ID: <span class="active-id-display"></span><br><span style="font-size:10.5px;opacity:.8">0 = none · 1 = partial · 2 = complete</span></div></div>
-      <div class="field-grid">
-        <div class="vote-wrapper" id="vote-s1"></div>
-        <div class="field field-span-2"><label>Additional Structures</label><input type="text" id="s1_additional_structures" placeholder="e.g. Nasal: partial collapse…" /></div>
-        <div class="video-card">
-          <div class="video-card-head">📹 Video Metadata</div>
-          <div class="field-grid three-col">
-            <div class="field"><label>Video File ID</label><input type="text" id="s1_video_id" placeholder="e.g. V-DISE-001-S1" /></div>
-            <div class="field"><label>Video Quality</label><div class="toggle-group"><input type="radio" name="s1_video_quality" id="s1_vq_ok" value="Adequate"><label for="s1_vq_ok">Adequate</label><input type="radio" name="s1_video_quality" id="s1_vq_poor" value="Inadequate"><label for="s1_vq_poor">Inadequate</label></div></div>
-            <div class="field"><label>Timestamp Markers</label><input type="text" id="s1_timestamps" placeholder="e.g. 00:45 Velum…" /></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- M2 Step 3: Review -->
-  <div class="step-panel" data-module="2" data-step="3">
-    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>Session 1 — verify before submitting to <strong>Session 1</strong> tab</p></div></div>
-    <div class="section-body"><div id="review-m2"></div></div>
-  </div>
-
-  <!-- ── MODULE 3: Session 2 ──────────────────────────────── -->
-
-  <!-- M3 Step 1: Session 2 Procedure -->
-  <div class="step-panel" data-module="3" data-step="1">
-    <div class="section-head"><div class="section-icon">🔬</div>
-      <div><h2>Session 2 — Procedural Data</h2><p>Sedation parameters, positional data, adverse events</p></div>
-    </div>
-    <div class="section-body">
-      <div class="session-banner" style="background:#fdf4ff;border-color:#e9d5ff;">🟡 <div><strong>Session 2</strong> &nbsp;·&nbsp; Study ID: <span class="active-id-display"></span></div></div>
-      <div class="field-grid">
-        <div class="field"><label>Session Date <span class="req">*</span></label><input type="date" id="s2_date" /></div>
-        <div class="field"><label>Session Start Time</label><input type="time" id="s2_time" /></div>
-        <div class="field"><label>Interval from Session 1 <span class="unit">(days)</span></label><input type="number" id="s2_interval_days" placeholder="—" min="0" max="365" /></div>
-        <div class="field"><label>Sedative Agent</label><select id="s2_sedative_agent"><option value="">— Select —</option><option>Propofol</option><option>Dexmedetomidine</option><option>Midazolam</option><option>Midazolam + Propofol</option><option>Propofol + Dexmedetomidine</option><option>Other</option></select></div>
-        <div class="field"><label>Sedative Dose / Titration</label><input type="text" id="s2_sedative_dose" placeholder="e.g. 1.5 mg/kg TCI" /></div>
-        <div class="field"><label>Target BIS</label><input type="number" id="s2_target_bis" placeholder="—" min="0" max="100" /></div>
-        <div class="field"><label>Achieved BIS <span class="unit">(mean)</span></label><input type="number" id="s2_achieved_bis" placeholder="—" min="0" max="100" step="0.1" /></div>
-        <div class="field"><label>Time to Target <span class="unit">(min)</span></label><input type="number" id="s2_time_to_target" placeholder="—" min="0" max="60" step="0.5" /></div>
-        <div class="field"><label>Duration <span class="unit">(min)</span></label><input type="number" id="s2_duration" placeholder="—" min="0" max="120" step="0.5" /></div>
-        <div class="field-divider"></div>
-        <div class="field-section-label">Adverse Events</div>
-        <div class="field"><label>Oxygen Desaturation?</label><div class="toggle-group"><input type="radio" name="s2_desat" id="s2_desat_y" value="Yes"><label for="s2_desat_y">Yes</label><input type="radio" name="s2_desat" id="s2_desat_n" value="No"><label for="s2_desat_n">No</label></div></div>
-        <div class="field"><label>Airway Obstruction?</label><div class="toggle-group"><input type="radio" name="s2_airway" id="s2_airway_y" value="Yes"><label for="s2_airway_y">Yes</label><input type="radio" name="s2_airway" id="s2_airway_n" value="No"><label for="s2_airway_n">No</label></div></div>
-        <div class="field"><label>Haemodynamic Instability?</label><div class="toggle-group"><input type="radio" name="s2_haemo" id="s2_haemo_y" value="Yes"><label for="s2_haemo_y">Yes</label><input type="radio" name="s2_haemo" id="s2_haemo_n" value="No"><label for="s2_haemo_n">No</label></div></div>
-        <div class="field-divider"></div>
-        <div class="field-section-label">Positional Data</div>
-        <div class="field"><label>Supine Examined?</label><div class="toggle-group"><input type="radio" name="s2_supine" id="s2_sup_y" value="Yes"><label for="s2_sup_y">Yes</label><input type="radio" name="s2_supine" id="s2_sup_n" value="No"><label for="s2_sup_n">No</label></div></div>
-        <div class="field"><label>Supine Duration <span class="unit">(min)</span></label><input type="number" id="s2_supine_duration" placeholder="—" min="0" max="60" step="0.5" /></div>
-        <div class="field"><label>Lateral Examined?</label><div class="toggle-group"><input type="radio" name="s2_lateral" id="s2_lat_y" value="Yes"><label for="s2_lat_y">Yes</label><input type="radio" name="s2_lateral" id="s2_lat_n" value="No"><label for="s2_lat_n">No</label></div></div>
-        <div class="field"><label>Lateral Duration <span class="unit">(min)</span></label><input type="number" id="s2_lateral_duration" placeholder="—" min="0" max="60" step="0.5" /></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- M3 Step 2: Session 2 VOTE -->
-  <div class="step-panel" data-module="3" data-step="2">
-    <div class="section-head"><div class="section-icon">👁</div>
-      <div><h2>Session 2 — VOTE Classification</h2><p>Collapse scoring per structure and position</p></div>
-    </div>
-    <div class="section-body">
-      <div class="session-banner" style="background:#fdf4ff;border-color:#e9d5ff;">🟡 <div><strong>Session 2 VOTE</strong> &nbsp;·&nbsp; Study ID: <span class="active-id-display"></span><br><span style="font-size:10.5px;opacity:.8">0 = none · 1 = partial · 2 = complete</span></div></div>
-      <div class="field-grid">
-        <div class="vote-wrapper" id="vote-s2"></div>
-        <div class="field field-span-2"><label>Additional Structures</label><input type="text" id="s2_additional_structures" placeholder="e.g. Nasal: partial collapse…" /></div>
-        <div class="video-card">
-          <div class="video-card-head">📹 Video Metadata</div>
-          <div class="field-grid three-col">
-            <div class="field"><label>Video File ID</label><input type="text" id="s2_video_id" placeholder="e.g. V-DISE-001-S2" /></div>
-            <div class="field"><label>Video Quality</label><div class="toggle-group"><input type="radio" name="s2_video_quality" id="s2_vq_ok" value="Adequate"><label for="s2_vq_ok">Adequate</label><input type="radio" name="s2_video_quality" id="s2_vq_poor" value="Inadequate"><label for="s2_vq_poor">Inadequate</label></div></div>
-            <div class="field"><label>Timestamp Markers</label><input type="text" id="s2_timestamps" placeholder="e.g. 00:45 Velum…" /></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- M3 Step 3: Review -->
-  <div class="step-panel" data-module="3" data-step="3">
-    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>Session 2 — verify before submitting to <strong>Session 2</strong> tab</p></div></div>
-    <div class="section-body"><div id="review-m3"></div></div>
-  </div>
-
-  <!-- ── MODULE 4: Observer Scoring ───────────────────────── -->
-
-  <!-- M4 Step 1: Observers -->
-  <div class="step-panel" data-module="4" data-step="1">
     <div class="section-head"><div class="section-icon">🔍</div>
-      <div><h2>Independent Observer Scoring</h2><p>Each observer's scores become a separate row in <strong>Observer Scores</strong> tab</p></div>
+      <div><h2>Independent Observer Scoring</h2><p>Each observer's scores go to a separate row in the <strong>Observer Scores</strong> tab</p></div>
     </div>
     <div class="section-body">
-      <div class="alert alert-note"><span>ℹ️</span><div>This section is completed by <strong>blinded observers</strong> after de-identified video review. Observers must not share scores or access clinical history.</div></div>
+      <div class="alert alert-note"><span>ℹ️</span><div>Completed by <strong>blinded observers</strong> after de-identified video review. Study ID: <strong><span class="active-id-display"></span></strong></div></div>
       <div id="observers-container"></div>
       <button class="btn btn-ghost" onclick="addObserver()" style="width:100%;justify-content:center;border-style:dashed;margin-top:4px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add Observer
       </button>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:8px;text-align:center"><span id="observer-count-label">2 observers</span> · One row per observer written to Observer Scores tab</div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:8px;text-align:center"><span id="observer-count-label">2 observers</span></div>
     </div>
   </div>
 
-  <!-- M4 Step 2: Review -->
-  <div class="step-panel" data-module="4" data-step="2">
-    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>Observer Scoring — verify before submitting to <strong>Observer Scores</strong> tab</p></div></div>
-    <div class="section-body"><div id="review-m4"></div></div>
+  <!-- M2 Step 2: Review -->
+  <div class="step-panel" data-module="2" data-step="2">
+    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>Observer Scoring — submitting to <strong>Observer Scores</strong> tab</p></div></div>
+    <div class="section-body"><div id="review-m2"></div></div>
   </div>
 
-  <!-- ── MODULE 5: Consensus ───────────────────────────────── -->
+  <!-- ═══ MODULE 3: Consensus ════════════════════════════════ -->
 
-  <!-- M5 Step 1: Consensus -->
-  <div class="step-panel" data-module="5" data-step="1">
+  <!-- M3 Step 1: Consensus -->
+  <div class="step-panel" data-module="3" data-step="1">
     <div class="section-head"><div class="section-icon">⚖️</div>
-      <div><h2>Consensus &amp; Treatment Outcome</h2><p>Adjudicator-resolved VOTE and treatment recommendation</p></div>
+      <div><h2>Consensus &amp; Treatment Recommendation</h2><p>Adjudicator-resolved VOTE classification and treatment outcome</p></div>
     </div>
     <div class="section-body">
-      <div class="alert alert-warn"><span>⚠️</span><div>Consensus VOTE is resolved by a <strong>third adjudicating observer</strong> for treatment recommendation only — not used in the primary agreement analysis.</div></div>
+      <div class="alert alert-warn"><span>⚠️</span><div>Resolved by a <strong>third adjudicating observer</strong> for treatment recommendation only — not used in the primary agreement analysis. Study ID: <strong><span class="active-id-display"></span></strong></div></div>
       <div class="field-grid">
-        <div class="field-section-label">Session 1 — Adjudicator Consensus VOTE</div>
-        <div class="field"><label>Velum</label><select id="con_s1_velum"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field"><label>Oropharynx</label><select id="con_s1_oropharynx"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field"><label>Tongue Base</label><select id="con_s1_tongue"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field"><label>Epiglottis</label><select id="con_s1_epiglottis"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field field-span-2"><label>Session 1 Treatment Recommendation</label>
-          <select id="tx_s1"><option value="">— Select —</option><option>Upper Airway Surgery</option><option>Oral Appliance Therapy</option><option>Hypoglossal Nerve Stimulation (HGNS)</option><option>Combined Surgical + Device</option><option>No Intervention / Conservative</option><option>Further Investigation Required</option></select>
+        <div class="field-section-label">Adjudicator Consensus VOTE</div>
+        <div class="field"><label>Velum</label><select id="con_velum"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+        <div class="field"><label>Oropharynx</label><select id="con_oropharynx"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+        <div class="field"><label>Tongue Base</label><select id="con_tongue"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+        <div class="field"><label>Epiglottis</label><select id="con_epiglottis"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+        <div class="field field-span-2"><label>Treatment Recommendation</label>
+          <select id="treatment_recommendation"><option value="">— Select —</option><option>Upper Airway Surgery</option><option>Oral Appliance Therapy</option><option>Hypoglossal Nerve Stimulation (HGNS)</option><option>Combined Surgical + Device</option><option>No Intervention / Conservative</option><option>Further Investigation Required</option></select>
         </div>
         <div class="field-divider"></div>
-        <div class="field-section-label">Session 2 — Adjudicator Consensus VOTE</div>
-        <div class="field"><label>Velum</label><select id="con_s2_velum"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field"><label>Oropharynx</label><select id="con_s2_oropharynx"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field"><label>Tongue Base</label><select id="con_s2_tongue"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field"><label>Epiglottis</label><select id="con_s2_epiglottis"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
-        <div class="field field-span-2"><label>Session 2 Treatment Recommendation</label>
-          <select id="tx_s2"><option value="">— Select —</option><option>Upper Airway Surgery</option><option>Oral Appliance Therapy</option><option>Hypoglossal Nerve Stimulation (HGNS)</option><option>Combined Surgical + Device</option><option>No Intervention / Conservative</option><option>Further Investigation Required</option></select>
+        <div class="field field-span-2"><label>Concordance with DISE Findings</label>
+          <div class="toggle-group"><input type="radio" name="concordance" id="conc_y" value="Concordant"><label for="conc_y">Concordant</label><input type="radio" name="concordance" id="conc_n" value="Discordant"><label for="conc_n">Discordant</label></div>
         </div>
-        <div class="field-divider"></div>
-        <div class="field field-span-2"><label>Treatment Recommendation Concordance</label>
-          <div class="toggle-group"><input type="radio" name="tx_concordance" id="conc_y" value="Concordant"><label for="conc_y">Concordant</label><input type="radio" name="tx_concordance" id="conc_n" value="Discordant"><label for="conc_n">Discordant</label></div>
-        </div>
-        <div class="field field-span-2"><label>Concordance Notes</label><textarea id="concordance_notes" placeholder="Describe discordance, adjudicator reasoning…"></textarea></div>
+        <div class="field field-span-2"><label>Concordance Notes</label><textarea id="concordance_notes" placeholder="Describe any discordance or qualifying observations…"></textarea></div>
       </div>
     </div>
   </div>
 
-  <!-- M5 Step 2: Review -->
-  <div class="step-panel" data-module="5" data-step="2">
-    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>Consensus — verify before submitting to <strong>Consensus</strong> tab</p></div></div>
-    <div class="section-body"><div id="review-m5"></div></div>
+  <!-- M3 Step 2: Review -->
+  <div class="step-panel" data-module="3" data-step="2">
+    <div class="section-head"><div class="section-icon">✅</div><div><h2>Review &amp; Submit</h2><p>Consensus — submitting to <strong>Consensus</strong> tab</p></div></div>
+    <div class="section-body"><div id="review-m3"></div></div>
   </div>
 
 </div><!-- /module-screen -->
 
-<!-- ═══ Success Screen ═══════════════════════════════════════════ -->
+<!-- Success -->
 <div id="success-screen">
   <div class="success-icon">✓</div>
   <h2 id="successTitle">Submitted</h2>
@@ -622,18 +520,18 @@
   <div class="success-id-box" id="successIdBox" style="display:none">
     <div class="label">Study ID — share this with your team</div>
     <div class="id" id="successIdVal"></div>
-    <div class="note">Give this 8-digit number to colleagues completing<br>Sessions 1 &amp; 2, Observer Scoring, and Consensus.</div>
+    <div class="note">Give this 8-digit number to colleagues completing<br>Observer Scoring and Consensus.</div>
   </div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-    <button class="btn btn-primary" id="successCopyBtn" style="display:none" onclick="copySuccessId()">📋 Copy Study ID</button>
-    <button class="btn btn-ghost" onclick="goHome()">← Back to Modules</button>
-    <button class="btn btn-primary" onclick="startNewEntry()">New Entry (same module)</button>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+    <button class="btn btn-primary" id="successCopyBtn" style="display:none" onclick="navigator.clipboard.writeText(document.getElementById('successIdVal').textContent)">📋 Copy Study ID</button>
+    <button class="btn btn-ghost" onclick="goHome()">← All Modules</button>
+    <button class="btn btn-primary" onclick="startNewEntry()">New Entry</button>
   </div>
 </div>
 
-</main><!-- /main -->
+</main>
 
-<!-- ═══ Nav Bar ══════════════════════════════════════════════════ -->
+<!-- Nav -->
 <nav class="nav-bar hidden" id="navBar">
   <div class="nav-info">Module <strong id="navModuleName"></strong> &nbsp;·&nbsp; Step <strong id="navStep"></strong></div>
   <div class="nav-btns">
@@ -652,35 +550,32 @@
 
 <script src="config.js"></script>
 <script>
-/* ═══════════════════════════════════════════════════════════════
-   CONFIGURATION
-═══════════════════════════════════════════════════════════════ */
-
+/* ── Module config ─────────────────────────────────────────── */
 const MODULE_CONFIG = {
-  1: { name:'Patient Baseline', icon:'📋', desc:'Screening · Demographics · Clinical · PSG', badgeType:'green', badgeText:'Generates Study ID', steps:['Screening','Demographics','Clinical','PSG','Review'], action:'baseline', tab:null, generatesId:true },
-  2: { name:'Session 1',        icon:'🔬', desc:'Procedure · VOTE Classification',           badgeType:'amber', badgeText:'Requires Study ID', steps:['Study ID','Procedure','VOTE','Review'],   action:'session1', tab:'session1', generatesId:false },
-  3: { name:'Session 2',        icon:'🔬', desc:'Procedure · VOTE Classification',           badgeType:'amber', badgeText:'Requires Study ID', steps:['Study ID','Procedure','VOTE','Review'],   action:'session2', tab:'session2', generatesId:false },
-  4: { name:'Observer Scoring', icon:'🔍', desc:'Independent blinded VOTE scores',           badgeType:'amber', badgeText:'Requires Study ID', steps:['Study ID','Observers','Review'],          action:'observers', tab:'observers', generatesId:false },
-  5: { name:'Consensus',        icon:'⚖️', desc:'Adjudicator VOTE · Treatment outcomes',     badgeType:'amber', badgeText:'Requires Study ID', steps:['Study ID','Consensus','Review'],          action:'consensus', tab:'consensus', generatesId:false },
+  1: { name:'DISE', icon:'🔬',
+       desc:'Screening · Demographics · Clinical · PSG · DISE Session',
+       badgeType:'green', badgeText:'Generates Study ID',
+       steps:['Screening','Demographics','Clinical','PSG','DISE Proc.','DISE VOTE','Review'],
+       action:'baseline_dise', tab:null, generatesId:true },
+  2: { name:'Observer Scoring', icon:'🔍',
+       desc:'Independent blinded VOTE scores per observer',
+       badgeType:'amber', badgeText:'Requires Study ID',
+       steps:['Study ID','Observers','Review'],
+       action:'observers', tab:'observers', generatesId:false },
+  3: { name:'Consensus', icon:'⚖️',
+       desc:'Adjudicator VOTE · Treatment recommendation',
+       badgeType:'amber', badgeText:'Requires Study ID',
+       steps:['Study ID','Consensus','Review'],
+       action:'consensus', tab:'consensus', generatesId:false },
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   STATE
-═══════════════════════════════════════════════════════════════ */
+/* ── State ─────────────────────────────────────────────────── */
+let currentModule = null, currentStep = 0;
+let activeStudyId = '', idValidated = false, observerCount = 0;
 
-let currentModule = null;
-let currentStep = 0;
-let activeStudyId = '';
-let idValidated = false;
-let observerCount = 0;
-
-/* ═══════════════════════════════════════════════════════════════
-   HOME SCREEN
-═══════════════════════════════════════════════════════════════ */
-
+/* ── Home ──────────────────────────────────────────────────── */
 function renderHome() {
-  const grid = document.getElementById('moduleGrid');
-  grid.innerHTML = Object.entries(MODULE_CONFIG).map(([id, m]) => `
+  document.getElementById('moduleGrid').innerHTML = Object.entries(MODULE_CONFIG).map(([id, m]) => `
     <div class="module-card" onclick="launchModule(${id})">
       <div class="module-card-num">${id}</div>
       <div class="module-card-icon">${m.icon}</div>
@@ -693,7 +588,6 @@ function renderHome() {
 async function launchModule(id) {
   currentModule = id;
   const cfg = MODULE_CONFIG[id];
-
   document.getElementById('home-screen').style.display = 'none';
   document.getElementById('module-screen').style.display = 'block';
   document.getElementById('success-screen').classList.remove('show');
@@ -701,38 +595,28 @@ async function launchModule(id) {
   document.getElementById('headerModuleLabel').textContent = cfg.name;
   document.getElementById('headerModuleLabel').classList.add('show');
   document.getElementById('navBar').classList.remove('hidden');
+  buildProgressTrack();
 
   if (cfg.generatesId) {
-    // Module 1: generate Study ID immediately
     activeStudyId = await generateUniqueId();
     document.getElementById('m1IdDisplay').textContent = activeStudyId;
+    document.getElementById('m1DiseIdDisplay').textContent = activeStudyId;
     currentStep = 0;
   } else {
-    // Modules 2-5: show ID entry first
-    idValidated = false;
-    activeStudyId = '';
+    idValidated = false; activeStudyId = '';
     document.getElementById('entered_study_id').value = '';
+    document.getElementById('entered_study_id').className = '';
     setIdStatus('', '');
     document.getElementById('idContinueBtn').style.display = 'none';
-    document.getElementById('entered_study_id').className = '';
-    // Update icon and desc per module
     document.getElementById('idEntryIcon').textContent = cfg.icon;
-    updateActiveIdDisplays();
     currentStep = 0;
   }
-
-  buildProgressTrack();
   renderStep();
 }
 
 function goHome() {
-  if (currentModule && currentStep > 0) {
-    if (!confirm('Return to home? Your unsaved entries will be lost.')) return;
-  }
-  currentModule = null;
-  currentStep = 0;
-  activeStudyId = '';
-  idValidated = false;
+  if (currentModule && currentStep > 0 && !confirm('Return to home? Unsaved entries will be lost.')) return;
+  currentModule = null; currentStep = 0; activeStudyId = ''; idValidated = false;
   document.getElementById('home-screen').style.display = 'block';
   document.getElementById('module-screen').style.display = 'none';
   document.getElementById('success-screen').classList.remove('show');
@@ -742,67 +626,50 @@ function goHome() {
   document.getElementById('navBar').classList.add('hidden');
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   STUDY ID GENERATION & VALIDATION
-═══════════════════════════════════════════════════════════════ */
-
+/* ── ID generation & validation ────────────────────────────── */
 async function generateUniqueId() {
-  for (let attempt = 0; attempt < 5; attempt++) {
+  for (let i = 0; i < 5; i++) {
     const id = String(Math.floor(Math.random() * 90000000) + 10000000);
     try {
-      const res = await fetch(`${SCRIPT_URL}?action=collision&study_id=${id}&_nc=${Date.now()}`);
-      const data = await res.json();
-      if (!data.collision) return id;
-    } catch (e) {
-      return id; // if server unreachable, use the ID (collision chance < 0.000001%)
-    }
+      const r = await fetch(`${SCRIPT_URL}?action=collision&study_id=${id}&_nc=${Date.now()}`);
+      const d = await r.json();
+      if (!d.collision) return id;
+    } catch { return id; }
   }
   return String(Math.floor(Math.random() * 90000000) + 10000000);
 }
 
 function onStudyIdInput() {
-  const val = document.getElementById('entered_study_id').value;
   document.getElementById('entered_study_id').className = '';
   setIdStatus('', '');
   document.getElementById('idContinueBtn').style.display = 'none';
   idValidated = false;
-  document.getElementById('validateBtn').disabled = val.length !== 8 || !/^\d{8}$/.test(val);
 }
 
 async function validateStudyId() {
   const val = document.getElementById('entered_study_id').value.trim();
-  if (!/^\d{8}$/.test(val)) {
-    setIdStatus('err', 'Please enter exactly 8 digits.');
-    return;
-  }
-  setIdStatus('checking', '⏳ Checking Study ID…');
+  if (!/^\d{8}$/.test(val)) { setIdStatus('err','Please enter exactly 8 digits.'); return; }
+  setIdStatus('checking','⏳ Checking Study ID…');
   document.getElementById('validateBtn').disabled = true;
-
   try {
-    // Step 1: does ID exist in Patient Baseline?
     const r1 = await fetch(`${SCRIPT_URL}?action=exists&study_id=${val}&_nc=${Date.now()}`);
     const d1 = await r1.json();
     if (!d1.exists) {
-      setIdStatus('err', '✗ Study ID not found in Patient Baseline. Please check and re-enter.');
+      setIdStatus('err','✗ Study ID not found. Please check and re-enter.');
       document.getElementById('entered_study_id').className = 'invalid';
-      document.getElementById('validateBtn').disabled = false;
-      return;
+      document.getElementById('validateBtn').disabled = false; return;
     }
-
-    // Step 2: duplicate check for this module's tab
     const cfg = MODULE_CONFIG[currentModule];
     if (cfg.tab === 'observers') {
       const r2 = await fetch(`${SCRIPT_URL}?action=duplicate&tab=observers&study_id=${val}&_nc=${Date.now()}`);
       const d2 = await r2.json();
       if (d2.count > 0) {
-        setIdStatus('warn', `⚠ ${d2.count} observer row(s) already exist for this Study ID. You can continue to add more.`);
-        idValidated = true;
-        activeStudyId = val;
+        setIdStatus('warn', `⚠ ${d2.count} observer row(s) already exist for this Study ID. You may continue to add more.`);
         document.getElementById('entered_study_id').className = 'valid';
-        document.getElementById('idContinueBtn').style.display = '';
+        idValidated = true; activeStudyId = val;
         updateActiveIdDisplays();
-        document.getElementById('validateBtn').disabled = false;
-        return;
+        document.getElementById('idContinueBtn').style.display = '';
+        document.getElementById('validateBtn').disabled = false; return;
       }
     } else {
       const r2 = await fetch(`${SCRIPT_URL}?action=duplicate&tab=${cfg.tab}&study_id=${val}&_nc=${Date.now()}`);
@@ -810,22 +677,17 @@ async function validateStudyId() {
       if (d2.duplicate) {
         setIdStatus('err', `✗ ${cfg.name} data already submitted for this Study ID.`);
         document.getElementById('entered_study_id').className = 'invalid';
-        document.getElementById('validateBtn').disabled = false;
-        return;
+        document.getElementById('validateBtn').disabled = false; return;
       }
     }
-
-    // All clear
-    setIdStatus('ok', `✓ Study ID verified — no duplicate found for ${MODULE_CONFIG[currentModule].name}.`);
+    setIdStatus('ok', `✓ Study ID verified.`);
     document.getElementById('entered_study_id').className = 'valid';
-    idValidated = true;
-    activeStudyId = val;
+    idValidated = true; activeStudyId = val;
     updateActiveIdDisplays();
     document.getElementById('idContinueBtn').style.display = '';
     document.getElementById('validateBtn').disabled = false;
-
-  } catch (err) {
-    setIdStatus('err', '✗ Network error during validation. Check your connection and try again.');
+  } catch {
+    setIdStatus('err','✗ Network error. Check your connection and try again.');
     document.getElementById('validateBtn').disabled = false;
   }
 }
@@ -838,174 +700,105 @@ function setIdStatus(type, msg) {
 
 function proceedAfterValidation() {
   if (!idValidated) return;
-  currentStep = 1;
-  renderStep();
+  currentStep = 1; renderStep();
 }
 
 function updateActiveIdDisplays() {
-  document.querySelectorAll('.active-id-display').forEach(el => {
-    el.textContent = activeStudyId || '—';
-  });
+  document.querySelectorAll('.active-id-display').forEach(el => el.textContent = activeStudyId || '—');
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════════════════════════ */
-
+/* ── Navigation ────────────────────────────────────────────── */
 function buildProgressTrack() {
-  const cfg = MODULE_CONFIG[currentModule];
   const track = document.getElementById('progressTrack');
   track.style.display = 'flex';
-  track.innerHTML = cfg.steps.map((s, i) =>
-    `<div class="prog-step" data-idx="${i}">${s}</div>`
-  ).join('');
-  updateProgress();
+  track.innerHTML = MODULE_CONFIG[currentModule].steps.map((s, i) =>
+    `<div class="prog-step" data-idx="${i}">${s}</div>`).join('');
 }
 
 function updateProgress() {
   const cfg = MODULE_CONFIG[currentModule];
   document.querySelectorAll('.prog-step').forEach((el, i) => {
-    el.classList.remove('active','done','clickable');
-    if (i === currentStep) el.classList.add('active');
-    else if (i < currentStep) { el.classList.add('done','clickable'); el.onclick = ()=>jumpTo(i); }
+    el.className = 'prog-step' + (i === currentStep ? ' active' : i < currentStep ? ' done' : '');
+    if (i < currentStep) el.onclick = () => jumpTo(i);
   });
   document.getElementById('navModuleName').textContent = cfg.name;
   document.getElementById('navStep').textContent = `${currentStep + 1} / ${cfg.steps.length}`;
-
-  const isFirst = currentStep === 0;
-  const isLast  = currentStep === cfg.steps.length - 1;
-  document.getElementById('btnPrev').style.display  = isFirst ? 'none' : '';
-  document.getElementById('btnNext').style.display  = isLast  ? 'none' : '';
-  document.getElementById('btnSubmit').style.display = isLast  ? ''     : 'none';
+  const isFirst = currentStep === 0, isLast = currentStep === cfg.steps.length - 1;
+  document.getElementById('btnPrev').style.display = isFirst ? 'none' : '';
+  document.getElementById('btnNext').style.display = isLast ? 'none' : '';
+  document.getElementById('btnSubmit').style.display = isLast ? '' : 'none';
   // Hide Next on ID entry step until validated
-  if (!cfg.generatesId && currentStep === 0) {
-    document.getElementById('btnNext').style.display = 'none';
-  }
+  if (!cfg.generatesId && currentStep === 0) document.getElementById('btnNext').style.display = 'none';
 }
 
 function renderStep() {
-  // Hide all panels
   document.querySelectorAll('.step-panel').forEach(el => el.classList.remove('active'));
-
   const cfg = MODULE_CONFIG[currentModule];
   if (!cfg.generatesId && currentStep === 0) {
-    // Show shared ID entry panel
     document.getElementById('id-entry-panel').classList.add('active');
   } else {
     const panel = document.querySelector(`.step-panel[data-module="${currentModule}"][data-step="${currentStep}"]`);
     if (panel) panel.classList.add('active');
-    // Build review if on last step
     if (currentStep === cfg.steps.length - 1) buildReview();
   }
   updateProgress();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function nextStep() {
-  const cfg = MODULE_CONFIG[currentModule];
-  if (currentStep < cfg.steps.length - 1) { currentStep++; renderStep(); }
-}
-function prevStep() {
-  if (currentStep > 0) { currentStep--; renderStep(); }
-}
-function jumpTo(i) {
-  if (i < currentStep) { currentStep = i; renderStep(); }
-}
+function nextStep() { if (currentStep < MODULE_CONFIG[currentModule].steps.length - 1) { currentStep++; renderStep(); } }
+function prevStep() { if (currentStep > 0) { currentStep--; renderStep(); } }
+function jumpTo(i)  { if (i < currentStep) { currentStep = i; renderStep(); } }
 
-/* ═══════════════════════════════════════════════════════════════
-   UTILITY
-═══════════════════════════════════════════════════════════════ */
+/* ── Utilities ─────────────────────────────────────────────── */
+const gv = id   => document.getElementById(id)?.value?.trim() ?? '';
+const gr = name => document.querySelector(`input[name="${name}"]:checked`)?.value ?? '';
+const calcBMI = () => { const h = parseFloat(gv('height')), w = parseFloat(gv('weight')); if (h > 0 && w > 0) document.getElementById('bmi').value = (w/((h/100)**2)).toFixed(1); };
+const togglePregnancy = () => { document.getElementById('pregnancy_field').style.display = gv('sex') === 'Female' ? 'flex' : 'none'; };
+const toggleEl = (id, show) => { const el = document.getElementById(id); show ? el.classList.add('show') : el.classList.remove('show'); };
+const getComorbidities = () => ['cmb_htn','cmb_dm','cmb_cvd','cmb_hypo','cmb_gerd','cmb_other'].map((id,i)=>document.getElementById(id)?.checked?['Hypertension','Diabetes','CVD','Hypothyroidism','GERD','Other'][i]:null).filter(Boolean).join(', ');
+const copyStudyId = () => navigator.clipboard.writeText(activeStudyId);
 
-const gv  = id   => document.getElementById(id)?.value?.trim() ?? '';
-const gr  = name => document.querySelector(`input[name="${name}"]:checked`)?.value ?? '';
-const calcBMI = () => {
-  const h = parseFloat(gv('height')), w = parseFloat(gv('weight'));
-  if (h > 0 && w > 0) document.getElementById('bmi').value = (w/((h/100)**2)).toFixed(1);
-};
-const togglePregnancy = () => {
-  const s = gv('sex');
-  document.getElementById('pregnancy_field').style.display = s === 'Female' ? 'flex' : 'none';
-};
-const toggleEl = (id, show) => {
-  const el = document.getElementById(id);
-  if (show) el.classList.add('show'); else el.classList.remove('show');
-};
-const getComorbidities = () => {
-  return ['cmb_htn','cmb_dm','cmb_cvd','cmb_hypo','cmb_gerd','cmb_other']
-    .map((id,i) => document.getElementById(id)?.checked ? ['Hypertension','Diabetes','CVD','Hypothyroidism','GERD','Other'][i] : null)
-    .filter(Boolean).join(', ');
-};
-const copyStudyId = () => { navigator.clipboard.writeText(activeStudyId); };
-const copySuccessId = () => { navigator.clipboard.writeText(document.getElementById('successIdVal').textContent); };
-
-/* ═══════════════════════════════════════════════════════════════
-   VOTE TABLE GENERATOR
-═══════════════════════════════════════════════════════════════ */
-
+/* ── VOTE table ────────────────────────────────────────────── */
 function voteTable(prefix) {
   const structs = [{c:'v',l:'V — Velum',s:'Soft palate'},{c:'o',l:'O — Oropharynx',s:'Lateral walls'},{c:'t',l:'T — Tongue Base',s:'Hypopharynx'},{c:'e',l:'E — Epiglottis',s:'Supraglottic'}];
   const pat = `<option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option>`;
-  const deg = (n,pos) => ['0','1','2'].map(v => `<input type="radio" name="${prefix}_${n}_${pos}_deg" id="${prefix}_${n}_${pos}_d${v}" value="${v}"><label for="${prefix}_${n}_${pos}_d${v}">${v}</label>`).join('');
-  const rows = structs.map(s => `<tr>
-    <td><div class="vote-structure-label">${s.l}<span>${s.s}</span></div></td>
-    <td><div class="degree-toggle">${deg(s.c,'sup')}</div></td>
-    <td><select id="${prefix}_${s.c}_sup_pat">${pat}</select></td>
-    <td class="pos-separator"></td>
-    <td><div class="degree-toggle">${deg(s.c,'lat')}</div></td>
-    <td><select id="${prefix}_${s.c}_lat_pat">${pat}</select></td>
-  </tr>`).join('');
-  return `<table class="vote-table">
-    <thead>
-      <tr><th style="width:130px">Structure</th><th class="pos-header" colspan="2">Supine</th><th class="pos-separator"></th><th class="pos-header" colspan="2">Lateral</th></tr>
-      <tr><th></th><th>Degree</th><th>Pattern</th><th class="pos-separator"></th><th>Degree</th><th>Pattern</th></tr>
-    </thead><tbody>${rows}</tbody></table>`;
+  const deg = (n,pos) => ['0','1','2'].map(v=>`<input type="radio" name="${prefix}_${n}_${pos}_deg" id="${prefix}_${n}_${pos}_d${v}" value="${v}"><label for="${prefix}_${n}_${pos}_d${v}">${v}</label>`).join('');
+  const rows = structs.map(s=>`<tr><td><div class="vote-structure-label">${s.l}<span>${s.s}</span></div></td><td><div class="degree-toggle">${deg(s.c,'sup')}</div></td><td><select id="${prefix}_${s.c}_sup_pat">${pat}</select></td><td class="pos-separator"></td><td><div class="degree-toggle">${deg(s.c,'lat')}</div></td><td><select id="${prefix}_${s.c}_lat_pat">${pat}</select></td></tr>`).join('');
+  return `<table class="vote-table"><thead><tr><th style="width:130px">Structure</th><th class="pos-header" colspan="2">Supine</th><th class="pos-separator"></th><th class="pos-header" colspan="2">Lateral</th></tr><tr><th></th><th>Degree</th><th>Pattern</th><th class="pos-separator"></th><th>Degree</th><th>Pattern</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-function initVoteTables() {
-  document.getElementById('vote-s1').innerHTML = voteTable('s1');
-  document.getElementById('vote-s2').innerHTML = voteTable('s2');
+function collectVOTE(prefix) {
+  const out = {};
+  for (const s of ['v','o','t','e']) for (const p of ['sup','lat']) {
+    out[`${prefix}_${s}_${p}_deg`] = gr(`${prefix}_${s}_${p}_deg`);
+    out[`${prefix}_${s}_${p}_pat`] = gv(`${prefix}_${s}_${p}_pat`);
+  }
+  return out;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   OBSERVER BLOCKS
-═══════════════════════════════════════════════════════════════ */
-
-function obsVoteTable(prefix) {
-  const structs = [{c:'v',l:'V — Velum'},{c:'o',l:'O — Oropharynx'},{c:'t',l:'T — Tongue Base'},{c:'e',l:'E — Epiglottis'}];
+/* ── Observer blocks ───────────────────────────────────────── */
+function obsVote(prefix) {
+  const structs = [{c:'v',l:'V'},{c:'o',l:'O'},{c:'t',l:'T'},{c:'e',l:'E'}];
   const pat = `<option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option>`;
-  const deg = (n,pos) => ['0','1','2'].map(v => `<input type="radio" name="${prefix}_${n}_${pos}_deg" id="${prefix}_${n}_${pos}_d${v}" value="${v}"><label for="${prefix}_${n}_${pos}_d${v}">${v}</label>`).join('');
-  const rows = structs.map(s => `<tr>
-    <td><div class="vote-structure-label">${s.l}</div></td>
-    <td><div class="degree-toggle">${deg(s.c,'sup')}</div></td>
-    <td><select id="${prefix}_${s.c}_sup_pat">${pat}</select></td>
-    <td class="pos-separator"></td>
-    <td><div class="degree-toggle">${deg(s.c,'lat')}</div></td>
-    <td><select id="${prefix}_${s.c}_lat_pat">${pat}</select></td>
-  </tr>`).join('');
-  return `<table class="vote-table">
-    <thead><tr><th style="width:130px">Structure</th><th class="pos-header" colspan="2">Supine</th><th class="pos-separator"></th><th class="pos-header" colspan="2">Lateral</th></tr><tr><th></th><th>Degree</th><th>Pattern</th><th class="pos-separator"></th><th>Degree</th><th>Pattern</th></tr></thead>
-    <tbody>${rows}</tbody></table>`;
+  const deg = (n,pos) => ['0','1','2'].map(v=>`<input type="radio" name="${prefix}_${n}_${pos}_deg" id="${prefix}_${n}_${pos}_d${v}" value="${v}"><label for="${prefix}_${n}_${pos}_d${v}">${v}</label>`).join('');
+  const rows = structs.map(s=>`<tr><td><div class="vote-structure-label">${s.l}</div></td><td><div class="degree-toggle">${deg(s.c,'sup')}</div></td><td><select id="${prefix}_${s.c}_sup_pat">${pat}</select></td><td class="pos-separator"></td><td><div class="degree-toggle">${deg(s.c,'lat')}</div></td><td><select id="${prefix}_${s.c}_lat_pat">${pat}</select></td></tr>`).join('');
+  return `<table class="vote-table"><thead><tr><th style="width:80px">Str.</th><th class="pos-header" colspan="2">Supine</th><th class="pos-separator"></th><th class="pos-header" colspan="2">Lateral</th></tr><tr><th></th><th>Deg.</th><th>Pattern</th><th class="pos-separator"></th><th>Deg.</th><th>Pattern</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function buildObserverBlock(uid, num) {
   const p = `obs${uid}`;
   return `<div class="observer-block" id="obs-block-${uid}" data-obs-uid="${uid}">
-    <div class="observer-block-head">
-      <span>👤 Observer ${num}</span>
-      ${num > 1 ? `<button class="remove-obs" onclick="removeObserver('${uid}')">✕ Remove</button>` : ''}
-    </div>
+    <div class="observer-block-head"><span>👤 Observer ${num}</span>${num>1?`<button class="remove-obs" onclick="removeObserver('${uid}')">✕ Remove</button>`:''}</div>
     <div class="observer-block-body">
       <div class="field-grid">
         <div class="field"><label>Observer ID</label><input type="text" id="${p}_id" placeholder="OBS-${String.fromCharCode(64+num)}" /></div>
         <div class="field"><label>Date / Time of Scoring</label><input type="datetime-local" id="${p}_datetime" /></div>
-        <div class="field"><label>Confidence Rating <span class="unit">(1–5)</span></label>
+        <div class="field"><label>Confidence <span class="unit">(1–5)</span></label>
           <select id="${p}_confidence"><option value="">—</option><option>1 — Very Low</option><option>2 — Low</option><option>3 — Moderate</option><option>4 — High</option><option>5 — Very High</option></select>
         </div>
         <div class="field"><label>Time to Score <span class="unit">(min)</span></label><input type="number" id="${p}_time_to_score" placeholder="—" min="0" max="120" step="0.5" /></div>
-        <div class="field-section-label">Session 1 VOTE — Observer ${num}</div>
-        <div class="vote-wrapper">${obsVoteTable(`${p}s1`)}</div>
-        <div class="field-section-label">Session 2 VOTE — Observer ${num}</div>
-        <div class="vote-wrapper">${obsVoteTable(`${p}s2`)}</div>
+        <div class="field-section-label">VOTE Scores — Observer ${num}</div>
+        <div class="vote-wrapper">${obsVote(`${p}`)}</div>
       </div>
     </div>
   </div>`;
@@ -1024,7 +817,7 @@ function addObserver() {
 
 function removeObserver(uid) {
   document.getElementById(`obs-block-${uid}`)?.remove();
-  document.querySelectorAll('.observer-block').forEach((el, i) => {
+  document.querySelectorAll('.observer-block').forEach((el,i) => {
     el.querySelector('.observer-block-head span').textContent = `👤 Observer ${i+1}`;
   });
   updateObserverLabel();
@@ -1036,182 +829,131 @@ function updateObserverLabel() {
 }
 
 function getObserversData() {
-  const structs = ['v','o','t','e'];
   return Array.from(document.querySelectorAll('.observer-block')).map((block, i) => {
     const uid = block.dataset.obsUid, p = `obs${uid}`;
     const g = id => document.getElementById(id)?.value?.trim() ?? '';
     const r = name => document.querySelector(`input[name="${name}"]:checked`)?.value ?? '';
-    const vote = sess => {
-      const sp = `${p}s${sess}`; const out = {};
-      for (const s of structs) {
-        out[`${s}_sup_deg`] = r(`${sp}_${s}_sup_deg`); out[`${s}_sup_pat`] = g(`${sp}_${s}_sup_pat`);
-        out[`${s}_lat_deg`] = r(`${sp}_${s}_lat_deg`); out[`${s}_lat_pat`] = g(`${sp}_${s}_lat_pat`);
-      }
-      return out;
-    };
+    const vote = {};
+    for (const s of ['v','o','t','e']) for (const pos of ['sup','lat']) {
+      vote[`${s}_${pos}_deg`] = r(`${p}_${s}_${pos}_deg`);
+      vote[`${s}_${pos}_pat`] = g(`${p}_${s}_${pos}_pat`);
+    }
     return { observer_number: i+1, id: g(`${p}_id`), datetime: g(`${p}_datetime`),
-             confidence: g(`${p}_confidence`), time_to_score: g(`${p}_time_to_score`),
-             session1_vote: vote(1), session2_vote: vote(2) };
+             confidence: g(`${p}_confidence`), time_to_score: g(`${p}_time_to_score`), vote };
   });
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   DATA COLLECTION
-═══════════════════════════════════════════════════════════════ */
-
-function collectVOTE(p) {
-  const out = {}, structs = ['v','o','t','e'], pos = ['sup','lat'];
-  for (const s of structs) for (const po of pos) {
-    out[`${p}_${s}_${po}_deg`] = gr(`${p}_${s}_${po}_deg`);
-    out[`${p}_${s}_${po}_pat`] = gv(`${p}_${s}_${po}_pat`);
-  }
-  return out;
-}
-
-function collectM1() {
-  return { _action:'baseline', timestamp:new Date().toISOString(), study_id:activeStudyId,
-    consent_date:gv('consent_date'), age:gv('age'), sex:gv('sex'), dob:gv('dob'),
-    pregnancy_status:gr('pregnancy'), screen_ahi:gv('screen_ahi'), psg_date:gv('psg_date'),
-    symptom_status:gr('symptom_status'), asa_grade:gv('asa_grade'),
-    referral_indication:gv('referral_indication'), prior_uaw_surgery:gr('prior_uaw'),
-    uaw_surgery_details:gv('uaw_surgery_details'), current_urti:gr('current_urti'),
-    sedative_allergy:gr('sed_allergy'), sed_allergy_details:gv('sed_allergy_details'),
-    height_cm:gv('height'), weight_kg:gv('weight'), bmi:gv('bmi'),
-    neck_circumference_cm:gv('neck_circumference'), waist_hip_ratio:gv('waist_hip_ratio'),
-    ethnicity:gv('ethnicity'), ess_score:gv('ess_score'), comorbidities:getComorbidities(),
-    comorbidity_other:gv('comorbidity_other'), medications:gv('medications'),
-    smoking:gv('smoking'), alcohol:gv('alcohol'),
-    psg_ahi:gv('psg_ahi'), psg_odi:gv('psg_odi'), psg_t90:gv('psg_t90'),
-    psg_to_dise_days:gv('psg_to_dise_days'), supine_ahi:gv('supine_ahi'),
-    nonsupine_ahi:gv('nonsupine_ahi'), rem_ahi:gv('rem_ahi'), nrem_ahi:gv('nrem_ahi') };
-}
-
-function collectSession(n) {
-  const p = `s${n}`;
-  return { _action:`session${n}`, timestamp:new Date().toISOString(), study_id:activeStudyId,
-    [`${p}_date`]:gv(`${p}_date`), [`${p}_time`]:gv(`${p}_time`),
-    [`${p}_interval_days`]:n===2?gv('s2_interval_days'):undefined,
-    [`${p}_sedative_agent`]:gv(`${p}_sedative_agent`), [`${p}_sedative_dose`]:gv(`${p}_sedative_dose`),
-    [`${p}_target_bis`]:gv(`${p}_target_bis`), [`${p}_achieved_bis`]:gv(`${p}_achieved_bis`),
-    [`${p}_time_to_target`]:gv(`${p}_time_to_target`), [`${p}_duration`]:gv(`${p}_duration`),
-    [`${p}_adverse_desat`]:gr(`${p}_desat`), [`${p}_adverse_airway`]:gr(`${p}_airway`),
-    [`${p}_adverse_haemo`]:gr(`${p}_haemo`),
-    [`${p}_supine`]:gr(`${p}_supine`), [`${p}_supine_duration`]:gv(`${p}_supine_duration`),
-    [`${p}_lateral`]:gr(`${p}_lateral`), [`${p}_lateral_duration`]:gv(`${p}_lateral_duration`),
-    ...collectVOTE(p),
-    [`${p}_additional`]:gv(`${p}_additional_structures`),
-    [`${p}_video_id`]:gv(`${p}_video_id`),
-    [`${p}_video_quality`]:gr(`${p}_video_quality`),
-    [`${p}_timestamps`]:gv(`${p}_timestamps`) };
-}
-
-function collectM4() {
-  const obs = getObserversData();
-  return { _action:'observers', timestamp:new Date().toISOString(), study_id:activeStudyId,
-    observers_json:JSON.stringify(obs) };
-}
-
-function collectM5() {
-  return { _action:'consensus', timestamp:new Date().toISOString(), study_id:activeStudyId,
-    con_s1_velum:gv('con_s1_velum'), con_s1_oropharynx:gv('con_s1_oropharynx'),
-    con_s1_tongue:gv('con_s1_tongue'), con_s1_epiglottis:gv('con_s1_epiglottis'), tx_s1:gv('tx_s1'),
-    con_s2_velum:gv('con_s2_velum'), con_s2_oropharynx:gv('con_s2_oropharynx'),
-    con_s2_tongue:gv('con_s2_tongue'), con_s2_epiglottis:gv('con_s2_epiglottis'), tx_s2:gv('tx_s2'),
-    tx_concordance:gr('tx_concordance'), concordance_notes:gv('concordance_notes') };
-}
-
+/* ── Data collection ───────────────────────────────────────── */
 function collectData() {
+  const ts = new Date().toISOString();
   switch (currentModule) {
-    case 1: return collectM1();
-    case 2: return collectSession(1);
-    case 3: return collectSession(2);
-    case 4: return collectM4();
-    case 5: return collectM5();
+    case 1: {
+      const vote = collectVOTE('dise');
+      return { _action:'baseline_dise', timestamp:ts, study_id:activeStudyId,
+        consent_date:gv('consent_date'), age:gv('age'), sex:gv('sex'), dob:gv('dob'),
+        pregnancy_status:gr('pregnancy'), screen_ahi:gv('screen_ahi'), psg_date:gv('psg_date'),
+        symptom_status:gr('symptom_status'), asa_grade:gv('asa_grade'),
+        referral_indication:gv('referral_indication'), prior_uaw_surgery:gr('prior_uaw'),
+        uaw_surgery_details:gv('uaw_surgery_details'), current_urti:gr('current_urti'),
+        sedative_allergy:gr('sed_allergy'), sed_allergy_details:gv('sed_allergy_details'),
+        height_cm:gv('height'), weight_kg:gv('weight'), bmi:gv('bmi'),
+        neck_circumference_cm:gv('neck_circumference'), waist_hip_ratio:gv('waist_hip_ratio'),
+        ethnicity:gv('ethnicity'), ess_score:gv('ess_score'), comorbidities:getComorbidities(),
+        comorbidity_other:gv('comorbidity_other'), medications:gv('medications'),
+        smoking:gv('smoking'), alcohol:gv('alcohol'),
+        psg_ahi:gv('psg_ahi'), psg_odi:gv('psg_odi'), psg_t90:gv('psg_t90'),
+        psg_to_dise_days:gv('psg_to_dise_days'), supine_ahi:gv('supine_ahi'),
+        nonsupine_ahi:gv('nonsupine_ahi'), rem_ahi:gv('rem_ahi'), nrem_ahi:gv('nrem_ahi'),
+        dise_date:gv('dise_date'), dise_time:gv('dise_time'),
+        dise_sedative_agent:gv('dise_sedative_agent'), dise_sedative_dose:gv('dise_sedative_dose'),
+        dise_target_bis:gv('dise_target_bis'), dise_achieved_bis:gv('dise_achieved_bis'),
+        dise_time_to_target:gv('dise_time_to_target'), dise_duration:gv('dise_duration'),
+        dise_adverse_desat:gr('dise_desat'), dise_adverse_airway:gr('dise_airway'),
+        dise_adverse_haemo:gr('dise_haemo'), dise_supine:gr('dise_supine'),
+        dise_supine_duration:gv('dise_supine_duration'), dise_lateral:gr('dise_lateral'),
+        dise_lateral_duration:gv('dise_lateral_duration'),
+        v_sup_deg:vote.dise_v_sup_deg, v_sup_pat:vote.dise_v_sup_pat,
+        v_lat_deg:vote.dise_v_lat_deg, v_lat_pat:vote.dise_v_lat_pat,
+        o_sup_deg:vote.dise_o_sup_deg, o_sup_pat:vote.dise_o_sup_pat,
+        o_lat_deg:vote.dise_o_lat_deg, o_lat_pat:vote.dise_o_lat_pat,
+        t_sup_deg:vote.dise_t_sup_deg, t_sup_pat:vote.dise_t_sup_pat,
+        t_lat_deg:vote.dise_t_lat_deg, t_lat_pat:vote.dise_t_lat_pat,
+        e_sup_deg:vote.dise_e_sup_deg, e_sup_pat:vote.dise_e_sup_pat,
+        e_lat_deg:vote.dise_e_lat_deg, e_lat_pat:vote.dise_e_lat_pat,
+        additional_structures:gv('additional_structures'), video_id:gv('video_id'),
+        video_quality:gr('video_quality'), timestamp_markers:gv('timestamp_markers') };
+    }
+    case 2:
+      return { _action:'observers', timestamp:ts, study_id:activeStudyId,
+               observers_json:JSON.stringify(getObserversData()) };
+    case 3:
+      return { _action:'consensus', timestamp:ts, study_id:activeStudyId,
+               con_velum:gv('con_velum'), con_oropharynx:gv('con_oropharynx'),
+               con_tongue:gv('con_tongue'), con_epiglottis:gv('con_epiglottis'),
+               treatment_recommendation:gv('treatment_recommendation'),
+               concordance:gr('concordance'), concordance_notes:gv('concordance_notes') };
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   REVIEW BUILDER
-═══════════════════════════════════════════════════════════════ */
+/* ── Review ────────────────────────────────────────────────── */
+function si(key, label, d) {
+  const v = d[key] ?? '';
+  return `<div class="summary-item"><span class="s-label">${label}</span><span class="s-value${!v?' empty':''}">${v||'—'}</span></div>`;
+}
+function sec(title, rows) {
+  return `<div class="summary-section"><h3>${title}</h3><div class="summary-grid">${rows.join('')}</div></div>`;
+}
 
 function buildReview() {
-  const d = collectData();
-  const s = (key, label) => {
-    const v = d[key] ?? '';
-    return `<div class="summary-item"><span class="s-label">${label}</span><span class="s-value${!v?' empty':''}">${v||'—'}</span></div>`;
-  };
-  let html = '';
-
+  const d = collectData(); let html = '';
   if (currentModule === 1) {
-    html = `<div class="study-id-banner"><div><div class="label">Study ID</div><div class="id-val">${activeStudyId}</div></div><button class="btn-copy" onclick="copyStudyId()">Copy</button></div>`;
-    html += section('📋 Screening', [s('consent_date','Consent Date'),s('age','Age'),s('sex','Sex'),s('asa_grade','ASA'),s('screen_ahi','Screen AHI'),s('referral_indication','Referral'),s('prior_uaw_surgery','Prior UAW Surg.'),s('current_urti','URTI'),s('sedative_allergy','Sed. Allergy')]);
-    html += section('📐 Demographics', [s('height_cm','Height'),s('weight_kg','Weight'),s('bmi','BMI'),s('neck_circumference_cm','Neck Circ.'),s('ethnicity','Ethnicity')]);
-    html += section('🩺 Clinical', [s('ess_score','ESS'),s('comorbidities','Comorbidities'),s('smoking','Smoking'),s('alcohol','Alcohol')]);
-    html += section('📈 PSG', [s('psg_ahi','AHI'),s('psg_odi','ODI'),s('psg_t90','T90'),s('psg_to_dise_days','PSG→DISE (days)'),s('supine_ahi','Supine AHI'),s('rem_ahi','REM AHI')]);
-  } else if (currentModule === 2 || currentModule === 3) {
-    const n = currentModule === 2 ? 1 : 2, p = `s${n}_`;
-    html += `<div class="summary-section"><h3>Study ID</h3><div class="summary-grid"><div class="summary-item"><span class="s-label">ID</span><span class="s-value">${activeStudyId}</span></div></div></div>`;
-    html += section(`🔬 Session ${n} — Procedure`, [s(`${p}date`,'Date'),s(`${p}time`,'Time'),s(`${p}sedative_agent`,'Agent'),s(`${p}target_bis`,'Target BIS'),s(`${p}achieved_bis`,'Achieved BIS'),s(`${p}duration`,'Duration'),s(`${p}adverse_desat`,'Desat'),s(`${p}adverse_airway`,'Airway Obs.'),s(`${p}adverse_haemo`,'Haemo.')]);
-    html += section(`👁 Session ${n} — VOTE (Supine)`, [s(`${p}v_sup_deg`,'V Degree'),s(`${p}v_sup_pat`,'V Pattern'),s(`${p}o_sup_deg`,'O Degree'),s(`${p}o_sup_pat`,'O Pattern'),s(`${p}t_sup_deg`,'T Degree'),s(`${p}t_sup_pat`,'T Pattern'),s(`${p}e_sup_deg`,'E Degree'),s(`${p}e_sup_pat`,'E Pattern')]);
-    html += section(`🎥 Video`, [s(`${p}video_id`,'Video ID'),s(`${p}video_quality`,'Quality')]);
-  } else if (currentModule === 4) {
+    html += `<div class="study-id-banner"><div><div class="label">Study ID</div><div class="id-val">${activeStudyId}</div></div><button class="btn-copy" onclick="copyStudyId()">Copy</button></div>`;
+    html += sec('📋 Screening',[si('consent_date','Consent Date',d),si('age','Age',d),si('sex','Sex',d),si('asa_grade','ASA',d),si('screen_ahi','AHI (screen)',d),si('referral_indication','Referral',d)]);
+    html += sec('📐 Demographics',[si('height_cm','Height',d),si('weight_kg','Weight',d),si('bmi','BMI',d),si('neck_circumference_cm','Neck Circ.',d),si('ethnicity','Ethnicity',d)]);
+    html += sec('🩺 Clinical',[si('ess_score','ESS',d),si('comorbidities','Comorbidities',d),si('smoking','Smoking',d),si('alcohol','Alcohol',d)]);
+    html += sec('📈 PSG',[si('psg_ahi','AHI',d),si('psg_odi','ODI',d),si('psg_t90','T90 (%)',d),si('psg_to_dise_days','PSG→DISE',d),si('supine_ahi','Supine AHI',d),si('rem_ahi','REM AHI',d)]);
+    html += sec('🔬 DISE Procedure',[si('dise_date','Date',d),si('dise_sedative_agent','Agent',d),si('dise_target_bis','Target BIS',d),si('dise_achieved_bis','Achieved BIS',d),si('dise_duration','Duration',d),si('dise_adverse_desat','Desat',d)]);
+    html += sec('👁 DISE VOTE (Supine)',[si('v_sup_deg','V Degree',d),si('v_sup_pat','V Pattern',d),si('o_sup_deg','O Degree',d),si('o_sup_pat','O Pattern',d),si('t_sup_deg','T Degree',d),si('t_sup_pat','T Pattern',d),si('e_sup_deg','E Degree',d),si('e_sup_pat','E Pattern',d)]);
+    html += sec('🎥 Video',[si('video_id','Video ID',d),si('video_quality','Quality',d)]);
+  } else if (currentModule === 2) {
     const obs = getObserversData();
     html += `<div class="summary-section"><h3>Study ID</h3><div class="summary-grid"><div class="summary-item"><span class="s-label">ID</span><span class="s-value">${activeStudyId}</span></div><div class="summary-item"><span class="s-label">Observers</span><span class="s-value">${obs.length}</span></div></div></div>`;
-    obs.forEach((o,i) => { html += section(`👤 Observer ${i+1}`, [`<div class="summary-item"><span class="s-label">ID</span><span class="s-value${!o.id?' empty':''}">${o.id||'—'}</span></div>`,`<div class="summary-item"><span class="s-label">Confidence</span><span class="s-value${!o.confidence?' empty':''}">${o.confidence||'—'}</span></div>`]); });
-  } else if (currentModule === 5) {
-    html += `<div class="summary-section"><h3>Study ID</h3><div class="summary-grid"><div class="summary-item"><span class="s-label">ID</span><span class="s-value">${activeStudyId}</span></div></div></div>`;
-    html += section('⚖️ Consensus', [s('con_s1_velum','S1 Velum'),s('con_s1_oropharynx','S1 Oropharynx'),s('con_s1_tongue','S1 Tongue'),s('con_s1_epiglottis','S1 Epiglottis'),s('tx_s1','S1 Treatment'),s('con_s2_velum','S2 Velum'),s('tx_s2','S2 Treatment'),s('tx_concordance','Concordance')]);
+    obs.forEach((o,i) => { html += sec(`👤 Observer ${i+1}`,[`<div class="summary-item"><span class="s-label">ID</span><span class="s-value${!o.id?' empty':''}">${o.id||'—'}</span></div>`,`<div class="summary-item"><span class="s-label">Confidence</span><span class="s-value${!o.confidence?' empty':''}">${o.confidence||'—'}</span></div>`]); });
+  } else if (currentModule === 3) {
+    html += sec('⚖️ Consensus',[si('con_velum','Velum',d),si('con_oropharynx','Oropharynx',d),si('con_tongue','Tongue',d),si('con_epiglottis','Epiglottis',d),si('treatment_recommendation','Treatment',d),si('concordance','Concordance',d)]);
   }
-
   document.getElementById(`review-m${currentModule}`).innerHTML = html;
 }
 
-function section(title, items) {
-  return `<div class="summary-section"><h3>${title}</h3><div class="summary-grid">${Array.isArray(items)?items.join(''):items}</div></div>`;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   SUBMISSION
-═══════════════════════════════════════════════════════════════ */
-
+/* ── Submission ────────────────────────────────────────────── */
 async function submitModule() {
   if (!SCRIPT_URL || SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_URL_HERE') {
-    alert('⚠️ Apps Script URL not configured. Open config.js and paste your URL into SCRIPT_URL.'); return;
+    alert('⚠️ Apps Script URL not configured. Open config.js.'); return;
   }
-  const btn = document.getElementById('btnSubmit');
   document.getElementById('submitLabel').style.display = 'none';
   document.getElementById('submitSpinner').style.display = '';
-  btn.disabled = true;
-
-  const data = collectData();
+  document.getElementById('btnSubmit').disabled = true;
   try {
-    await fetch(SCRIPT_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify(data)
-    });
+    await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(collectData()) });
     showSuccess();
   } catch (err) {
     document.getElementById('submitLabel').style.display = '';
     document.getElementById('submitSpinner').style.display = 'none';
-    btn.disabled = false;
-    alert('⚠️ Submission failed. Check your network connection.\n\n' + err.message);
+    document.getElementById('btnSubmit').disabled = false;
+    alert('⚠️ Submission failed.\n\n' + err.message);
   }
 }
 
 function showSuccess() {
-  const cfg = MODULE_CONFIG[currentModule];
+  const isM1 = currentModule === 1;
   document.getElementById('module-screen').style.display = 'none';
   document.getElementById('progressTrack').style.display = 'none';
   document.getElementById('navBar').classList.add('hidden');
-  document.getElementById('successTitle').textContent = `${cfg.name} Submitted`;
-  document.getElementById('successDesc').textContent = `Data sent to the ${cfg.name === 'Patient Baseline' ? 'Patient Baseline' : cfg.name} tab in the study spreadsheet.`;
-
-  const isBaseline = currentModule === 1;
-  document.getElementById('successIdBox').style.display = isBaseline ? '' : 'none';
-  document.getElementById('successCopyBtn').style.display = isBaseline ? '' : 'none';
-  if (isBaseline) document.getElementById('successIdVal').textContent = activeStudyId;
-
+  document.getElementById('successTitle').textContent = MODULE_CONFIG[currentModule].name + ' Submitted';
+  document.getElementById('successDesc').textContent = `Data sent to the ${isM1?'DISE':MODULE_CONFIG[currentModule].name} tab.`;
+  document.getElementById('successIdBox').style.display = isM1 ? '' : 'none';
+  document.getElementById('successCopyBtn').style.display = isM1 ? '' : 'none';
+  if (isM1) document.getElementById('successIdVal').textContent = activeStudyId;
   document.getElementById('success-screen').classList.add('show');
   document.getElementById('submitLabel').style.display = '';
   document.getElementById('submitSpinner').style.display = 'none';
@@ -1221,25 +963,18 @@ function showSuccess() {
 async function startNewEntry() {
   const mod = currentModule;
   document.getElementById('success-screen').classList.remove('show');
-  document.getElementById('module-screen').style.display = 'block';
-  // Reset form fields
   document.querySelectorAll('input[type=text],input[type=number],input[type=date],input[type=time],input[type=datetime-local],textarea').forEach(el => el.value = '');
   document.querySelectorAll('select').forEach(el => el.value = '');
   document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(el => el.checked = false);
-  // Reset observers
   document.getElementById('observers-container').innerHTML = '';
   observerCount = 0;
-  if (mod === 4) { addObserver(); addObserver(); }
   await launchModule(mod);
+  if (mod === 2) { addObserver(); addObserver(); }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════════════ */
-
+/* ── Init ──────────────────────────────────────────────────── */
 renderHome();
-initVoteTables();
-// Default 2 observers
+document.getElementById('vote-dise').innerHTML = voteTable('dise');
 addObserver(); addObserver();
 </script>
 </body>
