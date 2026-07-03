@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DISE Variability Study | Data Entry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Karla:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Design Tokens ──────────────────────────────────── */
+    :root {
+      --indigo:     #16194a;
+      --indigo-mid: #23276e;
+      --purple:     #6d28d9;
+      --purple-lt:  #a78bfa;
+      --purple-pale:#f5f3ff;
+      --bg:         #eef0f8;
+      --surface:    #ffffff;
+      --border:     #cdd0e4;
+      --text:       #1a1a3e;
+      --muted:      #6b6b9a;
+      --label:      #3d3d7a;
+      --coral:      #e05252;
+      --amber:      #d97706;
+
+      --font-head: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Karla', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+      --radius-sm: 6px;
+      --radius:    10px;
+      --radius-lg: 16px;
+      --shadow:    0 2px 12px rgba(22,25,74,.10), 0 1px 3px rgba(22,25,74,.06);
+      --shadow-lg: 0 8px 32px rgba(22,25,74,.15);
+      --trans:     200ms cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── Reset ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .app-header {
+      background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo-mid) 55%, #2e2a7a 100%);
+      padding: 28px 32px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a78bfa' fill-opacity='0.04'%3E%3Ccircle cx='40' cy='40' r='2'/%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='80' cy='0' r='2'/%3E%3Ccircle cx='0' cy='80' r='2'/%3E%3Ccircle cx='80' cy='80' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(109,40,217,.25); border: 1px solid rgba(167,139,250,.4);
+      color: var(--purple-lt); font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px;
+      border-radius: 20px; margin-bottom: 14px;
+    }
+    .header-badge::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .app-header h1 {
+      font-family: var(--font-head); font-size: clamp(20px, 2.8vw, 28px);
+      font-weight: 500; color: #fff; letter-spacing: -.01em; line-height: 1.2; margin-bottom: 6px;
+    }
+    .app-header h1 em { color: var(--purple-lt); font-style: italic; }
+    .app-header p { font-size: 13px; color: rgba(255,255,255,.5); margin-bottom: 26px; }
+
+    /* ── Progress Track ─────────────────────────────────── */
+    .progress-track {
+      display: flex; gap: 0;
+      background: rgba(255,255,255,.05);
+      border-radius: var(--radius) var(--radius) 0 0;
+      overflow: hidden; margin: 0 -32px;
+    }
+    .prog-step {
+      flex: 1; padding: 8px 3px 9px;
+      font-size: 9.5px; font-family: var(--font-mono); letter-spacing: .04em;
+      text-transform: uppercase; color: rgba(255,255,255,.3);
+      text-align: center; cursor: pointer; transition: var(--trans);
+      border-bottom: 2px solid transparent; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .prog-step.completed { color: var(--purple-lt); border-color: var(--purple); background: rgba(109,40,217,.1); }
+    .prog-step.active    { color: #fff; border-color: var(--purple-lt); background: rgba(109,40,217,.18); font-weight: 500; }
+    .prog-step:hover:not(.active) { color: rgba(255,255,255,.6); }
+
+    /* ── Main ───────────────────────────────────────────── */
+    .main { max-width: 900px; margin: 0 auto; padding: 28px 20px 120px; }
+
+    /* ── Section Card ───────────────────────────────────── */
+    .section-card { display: none; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; animation: fadeSlide .28s ease; }
+    .section-card.active { display: block; }
+    @keyframes fadeSlide { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+    .section-head {
+      padding: 18px 28px 16px; border-bottom: 1px solid var(--border);
+      background: linear-gradient(to right, #f7f8fc, #fff);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .section-icon {
+      width: 40px; height: 40px; background: var(--purple-pale); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+    }
+    .section-head h2 { font-family: var(--font-head); font-size: 18px; font-weight: 500; color: var(--indigo); letter-spacing: -.01em; }
+    .section-head p { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+    .section-body { padding: 26px 28px 20px; }
+
+    /* ── Session Banner ─────────────────────────────────── */
+    .session-banner {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--purple-pale); border: 1px solid #ddd6fe;
+      border-radius: var(--radius); padding: 10px 16px; margin-bottom: 22px;
+      font-family: var(--font-mono); font-size: 11.5px; color: var(--purple);
+    }
+    .session-banner strong { font-size: 14px; }
+
+    /* ── Field Grid ─────────────────────────────────────── */
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+    .field-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+    .field-grid.single { grid-template-columns: 1fr; }
+    @media (max-width: 640px) { .field-grid,.field-grid.three-col { grid-template-columns: 1fr; } }
+    .field-span-2 { grid-column: span 2; }
+    .field-span-3 { grid-column: span 3; }
+    @media (max-width: 640px) { .field-span-2,.field-span-3 { grid-column: span 1; } }
+
+    /* ── Field ──────────────────────────────────────────── */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: .06em; text-transform: uppercase; color: var(--label);
+    }
+    .field label .req { color: var(--coral); margin-left: 2px; }
+    .field label .unit { font-weight: 400; color: var(--muted); font-size: 10px; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+    .field-hint { font-size: 11.5px; color: var(--muted); margin-top: -2px; }
+
+    /* ── Inputs ─────────────────────────────────────────── */
+    input[type=text], input[type=number], input[type=date], input[type=time],
+    select, textarea {
+      width: 100%; padding: 9px 12px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 14px; color: var(--text);
+      background: #fafcff; transition: border-color var(--trans), box-shadow var(--trans);
+      appearance: none; -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--purple); background: #fff;
+      box-shadow: 0 0 0 3px rgba(109,40,217,.12);
+    }
+    textarea { resize: vertical; min-height: 72px; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b9a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center; padding-right: 34px;
+    }
+    input[type=number] { font-family: var(--font-mono); }
+
+    /* ── Toggle (Yes/No) ────────────────────────────────── */
+    .toggle-group { display: flex; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: #fafcff; }
+    .toggle-group input[type=radio] { display: none; }
+    .toggle-group label {
+      flex: 1; text-align: center; padding: 8px 10px; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: var(--trans); color: var(--muted);
+      border-right: 1px solid var(--border); font-family: var(--font-body);
+      letter-spacing: 0; text-transform: none;
+    }
+    .toggle-group label:last-of-type { border-right: none; }
+    .toggle-group input:checked + label { background: var(--purple); color: #fff; }
+
+    /* ── Degree Toggle (0/1/2) ──────────────────────────── */
+    .degree-toggle { display: flex; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: #fafcff; }
+    .degree-toggle input[type=radio] { display: none; }
+    .degree-toggle label {
+      flex: 1; text-align: center; padding: 6px 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: var(--trans); color: var(--muted);
+      border-right: 1px solid var(--border); font-family: var(--font-mono);
+    }
+    .degree-toggle label:last-of-type { border-right: none; }
+    .degree-toggle input:checked + label { background: var(--purple); color: #fff; }
+    .degree-toggle input[value="0"]:checked + label { background: #d1fae5; color: #065f46; }
+    .degree-toggle input[value="1"]:checked + label { background: #fef3c7; color: #92400e; }
+    .degree-toggle input[value="2"]:checked + label { background: #fee2e2; color: #991b1b; }
+
+    /* Conditional */
+    .conditional { display: none; }
+    .conditional.show { display: contents; }
+
+    /* ── Dividers & Labels ──────────────────────────────── */
+    .field-divider { grid-column: 1/-1; height: 1px; background: var(--border); margin: 4px 0; }
+    .field-section-label {
+      grid-column: 1/-1; font-family: var(--font-mono); font-size: 10.5px;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--purple); font-weight: 500; padding-top: 4px;
+    }
+
+    /* ── Comorbidity Checkboxes ─────────────────────────── */
+    .checkbox-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .checkbox-item { display: flex; align-items: center; gap: 6px; }
+    .checkbox-item input[type=checkbox] {
+      width: 16px; height: 16px; border: 1.5px solid var(--border);
+      border-radius: 4px; appearance: auto; accent-color: var(--purple);
+    }
+    .checkbox-item label { font-size: 13px; color: var(--text); cursor: pointer; font-family: var(--font-body); }
+
+    /* ── VOTE Table ─────────────────────────────────────── */
+    .vote-wrapper { grid-column: 1/-1; }
+    .vote-table {
+      width: 100%;
+      border-collapse: separate; border-spacing: 0;
+      border: 1.5px solid var(--border); border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .vote-table th {
+      background: #f0eeff; font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: .06em; text-transform: uppercase; color: var(--label);
+      padding: 8px 10px; text-align: center; border-bottom: 1.5px solid var(--border);
+      font-weight: 500;
+    }
+    .vote-table th:first-child { text-align: left; }
+    .vote-table td {
+      padding: 8px 8px; border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .vote-table tr:last-child td { border-bottom: none; }
+    .vote-table tr:nth-child(even) td { background: #faf9ff; }
+    .vote-structure-label {
+      font-family: var(--font-mono); font-size: 11.5px; font-weight: 500;
+      color: var(--indigo); white-space: nowrap; padding-right: 6px;
+    }
+    .vote-structure-label span { display: block; font-size: 9.5px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+    .vote-table select { font-size: 12px; padding: 5px 28px 5px 8px; }
+    .pos-separator {
+      width: 1px; background: var(--border); padding: 0 !important;
+    }
+    .pos-header { background: #e8e3ff !important; }
+    .vote-note { grid-column: 1/-1; font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+
+    /* ── Video Metadata Card ────────────────────────────── */
+    .video-card {
+      grid-column: 1/-1; background: #f7f8fc; border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 16px 18px;
+    }
+    .video-card-head {
+      font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--purple); font-weight: 500; margin-bottom: 14px;
+    }
+    .video-card .field-grid { grid-template-columns: 1fr 1fr 1fr; }
+
+    /* ── Observer Block ─────────────────────────────────── */
+    .observer-block {
+      border: 1.5px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 20px;
+    }
+    .observer-block-head {
+      background: #f0eeff; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--purple); font-weight: 500;
+    }
+    .observer-block-head .remove-obs {
+      background: none; border: 1px solid #ddd6fe; color: var(--muted); border-radius: 4px;
+      padding: 2px 8px; font-size: 11px; cursor: pointer; font-family: var(--font-mono);
+      transition: var(--trans);
+    }
+    .observer-block-head .remove-obs:hover { background: #fee2e2; border-color: #fca5a5; color: var(--coral); }
+    .observer-block-body { padding: 16px 16px 12px; }
+
+    /* ── Calc Badge ─────────────────────────────────────── */
+    .calc-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10.5px; color: var(--purple); font-family: var(--font-mono);
+      background: var(--purple-pale); padding: 2px 7px; border-radius: 4px; margin-top: 4px;
+    }
+
+    /* ── Alert ──────────────────────────────────────────── */
+    .alert {
+      padding: 12px 16px; border-radius: var(--radius-sm);
+      font-size: 13px; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px;
+    }
+    .alert-info { background: var(--purple-pale); border: 1px solid #ddd6fe; color: #4c1d95; }
+    .alert-warn { background: #fffbeb; border: 1px solid #fde68a; color: #78350f; }
+    .alert-note { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+
+    /* ── Nav Bar ────────────────────────────────────────── */
+    .nav-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(255,255,255,.95); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border); padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; z-index: 100; box-shadow: 0 -4px 20px rgba(22,25,74,.08);
+    }
+    .nav-info { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+    .nav-info strong { color: var(--label); }
+    .nav-btns { display: flex; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 20px; border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: var(--trans); border: none;
+    }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); color: var(--label); }
+    .btn-primary { background: var(--purple); color: #fff; }
+    .btn-primary:hover { background: #5b21b6; }
+    .btn-submit { background: var(--indigo); color: #fff; }
+    .btn-submit:hover { background: #0f1238; }
+    .btn svg { width: 15px; height: 15px; }
+
+    /* ── Summary / Review ───────────────────────────────── */
+    .summary-section { margin-bottom: 20px; }
+    .summary-section h3 {
+      font-family: var(--font-head); font-size: 15px; font-weight: 500;
+      color: var(--indigo); margin-bottom: 10px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 20px; }
+    @media (max-width: 500px) { .summary-grid { grid-template-columns: 1fr; } }
+    .summary-item {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+      padding: 5px 0; border-bottom: 1px solid #f0f2f8;
+    }
+    .summary-item .s-label { font-size: 11px; color: var(--muted); font-family: var(--font-mono); flex-shrink: 0; }
+    .summary-item .s-value { font-size: 13px; color: var(--text); text-align: right; font-weight: 500; }
+    .summary-item .s-value.empty { color: #b0b4c8; font-weight: 400; font-style: italic; }
+
+    /* ── Success ────────────────────────────────────────── */
+    #success-screen { display: none; min-height: 60vh; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 60px 24px; }
+    #success-screen.show { display: flex; }
+    .success-icon { width: 72px; height: 72px; background: var(--purple-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 24px; animation: pop .4s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+    #success-screen h2 { font-family: var(--font-head); font-size: 26px; color: var(--indigo); margin-bottom: 10px; }
+    #success-screen p { font-size: 15px; color: var(--muted); max-width: 420px; margin-bottom: 28px; line-height: 1.7; }
+    #success-screen .meta { font-family: var(--font-mono); font-size: 12px; color: var(--purple); background: var(--purple-pale); padding: 10px 20px; border-radius: var(--radius); margin-bottom: 28px; }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+  </style>
+</head>
+<body>
+
+<!-- ═══ Header ══════════════════════════════════════════════ -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-badge">DISE Variability Study · CRF Active</div>
+    <h1>Intra-individual &amp; Inter-observer Variability in<br><em>Drug-Induced Sleep Endoscopy</em></h1>
+    <p>Prospective Observational Reproducibility Study · VOTE Classification CRF · Institute of Sleep Science, Kolkata</p>
+
+    <div class="progress-track" id="progressTrack">
+      <div class="prog-step active" data-step="0" onclick="jumpToStep(0)">Screening</div>
+      <div class="prog-step" data-step="1" onclick="jumpToStep(1)">Demo.</div>
+      <div class="prog-step" data-step="2" onclick="jumpToStep(2)">Clinical</div>
+      <div class="prog-step" data-step="3" onclick="jumpToStep(3)">PSG</div>
+      <div class="prog-step" data-step="4" onclick="jumpToStep(4)">S1 Proc.</div>
+      <div class="prog-step" data-step="5" onclick="jumpToStep(5)">S1 VOTE</div>
+      <div class="prog-step" data-step="6" onclick="jumpToStep(6)">S2 Proc.</div>
+      <div class="prog-step" data-step="7" onclick="jumpToStep(7)">S2 VOTE</div>
+      <div class="prog-step" data-step="8" onclick="jumpToStep(8)">Observers</div>
+      <div class="prog-step" data-step="9" onclick="jumpToStep(9)">Consensus</div>
+      <div class="prog-step" data-step="10" onclick="jumpToStep(10)">Review</div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Main ════════════════════════════════════════════════ -->
+<main class="main">
+<div id="form-wrapper">
+
+<!-- ─── STEP 0: Screening & Eligibility ───────────────────── -->
+<div class="section-card active" data-section="0">
+  <div class="section-head">
+    <div class="section-icon">📋</div>
+    <div><h2>Screening &amp; Eligibility</h2><p>Patient identification, eligibility criteria, and consent</p></div>
+  </div>
+  <div class="section-body">
+    <div class="field-grid">
+      <div class="field">
+        <label>Study ID <span class="req">*</span></label>
+        <input type="text" id="study_id" placeholder="e.g. DISE-2024-001" />
+      </div>
+      <div class="field">
+        <label>Informed Consent Date <span class="req">*</span></label>
+        <input type="date" id="consent_date" />
+      </div>
+      <div class="field">
+        <label>Age <span class="unit">(years)</span><span class="req">*</span></label>
+        <input type="number" id="age" placeholder="—" min="18" max="110" />
+      </div>
+      <div class="field">
+        <label>Sex <span class="req">*</span></label>
+        <select id="sex" onchange="togglePregnancy()">
+          <option value="">— Select —</option>
+          <option>Male</option><option>Female</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Date of Birth</label>
+        <input type="date" id="dob" />
+      </div>
+      <div class="field conditional" id="pregnancy_field">
+        <label>Pregnancy Status</label>
+        <div class="toggle-group">
+          <input type="radio" name="pregnancy" id="preg_yes" value="Yes"><label for="preg_yes">Yes</label>
+          <input type="radio" name="pregnancy" id="preg_no" value="No"><label for="preg_no">No</label>
+          <input type="radio" name="pregnancy" id="preg_na" value="N/A"><label for="preg_na">N/A</label>
+        </div>
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field-section-label">Eligibility Criteria</div>
+
+      <div class="field">
+        <label>AHI from Diagnostic PSG <span class="unit">(events/hr)</span><span class="req">*</span></label>
+        <input type="number" id="screen_ahi" placeholder="—" min="0" max="200" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Date of Diagnostic PSG <span class="req">*</span></label>
+        <input type="date" id="psg_date" />
+      </div>
+      <div class="field field-span-2">
+        <label>Symptom Status <span class="unit">— for AHI 5–15 subgroup</span></label>
+        <div class="toggle-group">
+          <input type="radio" name="symptom_status" id="sym_yes" value="Symptomatic"><label for="sym_yes">Symptomatic</label>
+          <input type="radio" name="symptom_status" id="sym_no" value="Asymptomatic"><label for="sym_no">Asymptomatic</label>
+          <input type="radio" name="symptom_status" id="sym_na" value="N/A (AHI ≥15)"><label for="sym_na">N/A (AHI ≥15)</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>ASA Physical Status <span class="req">*</span></label>
+        <select id="asa_grade">
+          <option value="">— Select —</option>
+          <option>ASA I</option><option>ASA II</option><option>ASA III</option>
+          <option>ASA IV</option><option>ASA V</option>
+        </select>
+        <span class="field-hint">Note: ASA ≥ IV is an exclusion criterion</span>
+      </div>
+      <div class="field">
+        <label>Referral Indication <span class="req">*</span></label>
+        <select id="referral_indication">
+          <option value="">— Select —</option>
+          <option>Upper Airway Surgery Evaluation</option>
+          <option>Oral Appliance Evaluation</option>
+          <option>Hypoglossal Nerve Stimulation (HGNS) Evaluation</option>
+          <option>Combined / Multiple</option>
+        </select>
+      </div>
+      <div class="field field-span-2">
+        <label>Prior Upper Airway Surgery?</label>
+        <div class="toggle-group" id="prior_uaw_group">
+          <input type="radio" name="prior_uaw" id="uaw_yes" value="Yes" onchange="toggleUAW()"><label for="uaw_yes">Yes</label>
+          <input type="radio" name="prior_uaw" id="uaw_no" value="No" onchange="toggleUAW()"><label for="uaw_no">No</label>
+        </div>
+      </div>
+      <div class="conditional field-span-2" id="uaw_details_field">
+        <div class="field">
+          <label>Prior UAW Surgery Details</label>
+          <input type="text" id="uaw_surgery_details" placeholder="Procedure, year, institution…" />
+        </div>
+      </div>
+      <div class="field field-span-2">
+        <label>Current URTI Symptoms?</label>
+        <div class="toggle-group">
+          <input type="radio" name="current_urti" id="urti_yes" value="Yes"><label for="urti_yes">Yes</label>
+          <input type="radio" name="current_urti" id="urti_no" value="No"><label for="urti_no">No</label>
+        </div>
+      </div>
+      <div class="field field-span-2">
+        <label>Sedative Drug Allergy / Hypersensitivity?</label>
+        <div class="toggle-group">
+          <input type="radio" name="sed_allergy" id="allergy_yes" value="Yes" onchange="toggleAllergy()"><label for="allergy_yes">Yes</label>
+          <input type="radio" name="sed_allergy" id="allergy_no" value="No" onchange="toggleAllergy()"><label for="allergy_no">No</label>
+        </div>
+      </div>
+      <div class="conditional field-span-2" id="allergy_details_field">
+        <div class="field">
+          <label>Allergy Details</label>
+          <input type="text" id="sed_allergy_details" placeholder="Agent, reaction type…" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 1: Demographics & Anthropometrics ────────────── -->
+<div class="section-card" data-section="1">
+  <div class="section-head">
+    <div class="section-icon">📐</div>
+    <div><h2>Demographics &amp; Anthropometrics</h2><p>Physical measurements and demographic identifiers</p></div>
+  </div>
+  <div class="section-body">
+    <div class="field-grid">
+      <div class="field">
+        <label>Height <span class="unit">(cm)</span></label>
+        <input type="number" id="height" placeholder="—" min="100" max="230" oninput="calcBMI()" />
+      </div>
+      <div class="field">
+        <label>Weight <span class="unit">(kg)</span></label>
+        <input type="number" id="weight" placeholder="—" min="20" max="300" step="0.1" oninput="calcBMI()" />
+      </div>
+      <div class="field">
+        <label>BMI</label>
+        <input type="number" id="bmi" placeholder="Auto-calculated" step="0.01" />
+        <span class="calc-badge">⚡ Auto from height &amp; weight</span>
+      </div>
+      <div class="field">
+        <label>Neck Circumference <span class="unit">(cm)</span></label>
+        <input type="number" id="neck_circumference" placeholder="—" min="20" max="70" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Waist-Hip Ratio <span class="unit">(optional)</span></label>
+        <input type="number" id="waist_hip_ratio" placeholder="—" min="0.5" max="2.0" step="0.01" />
+        <span class="field-hint">Correlates with OSA phenotype</span>
+      </div>
+      <div class="field">
+        <label>Ethnicity</label>
+        <select id="ethnicity">
+          <option value="">— Select —</option>
+          <option>South Asian</option>
+          <option>East Asian</option>
+          <option>Southeast Asian</option>
+          <option>Caucasian / European</option>
+          <option>African / African-Caribbean</option>
+          <option>Middle Eastern</option>
+          <option>Mixed</option>
+          <option>Other</option>
+          <option>Not disclosed</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 2: Clinical & Questionnaire ─────────────────── -->
+<div class="section-card" data-section="2">
+  <div class="section-head">
+    <div class="section-icon">🩺</div>
+    <div><h2>Baseline Clinical &amp; Questionnaire Data</h2><p>Symptom scores, comorbidities, medications, and lifestyle history</p></div>
+  </div>
+  <div class="section-body">
+    <div class="field-grid">
+      <div class="field">
+        <label>ESS Score <span class="unit">(0–24)</span><span class="req">*</span></label>
+        <input type="number" id="ess_score" placeholder="—" min="0" max="24" />
+        <span class="field-hint">Epworth Sleepiness Scale</span>
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field-section-label">Comorbidities</div>
+      <div class="field field-span-2">
+        <label>Active Comorbidities</label>
+        <div class="checkbox-grid">
+          <div class="checkbox-item"><input type="checkbox" id="cmb_htn"><label for="cmb_htn">Hypertension</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="cmb_dm"><label for="cmb_dm">Diabetes Mellitus</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="cmb_cvd"><label for="cmb_cvd">Cardiovascular Disease</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="cmb_hypo"><label for="cmb_hypo">Hypothyroidism</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="cmb_gerd"><label for="cmb_gerd">GERD</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="cmb_other"><label for="cmb_other">Other</label></div>
+        </div>
+      </div>
+      <div class="field field-span-2">
+        <label>Other Comorbidity Details</label>
+        <input type="text" id="comorbidity_other" placeholder="Specify other comorbidities…" />
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field-section-label">Medications &amp; Lifestyle</div>
+      <div class="field field-span-2">
+        <label>Current Medications <span class="unit">— especially sedatives, muscle relaxants, antihypertensives</span></label>
+        <textarea id="medications" placeholder="List medications, doses, and relevance to airway tone…"></textarea>
+      </div>
+      <div class="field">
+        <label>Smoking History</label>
+        <select id="smoking">
+          <option value="">— Select —</option>
+          <option>Never</option>
+          <option>Ex-smoker</option>
+          <option>Current smoker</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Alcohol History</label>
+        <select id="alcohol">
+          <option value="">— Select —</option>
+          <option>Never</option>
+          <option>Occasional</option>
+          <option>Regular</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 3: PSG Data ──────────────────────────────────── -->
+<div class="section-card" data-section="3">
+  <div class="section-head">
+    <div class="section-icon">📈</div>
+    <div><h2>Diagnostic Polysomnography Data</h2><p>Sleep study parameters used to confirm OSA eligibility</p></div>
+  </div>
+  <div class="section-body">
+    <div class="field-grid">
+      <div class="field">
+        <label>AHI <span class="unit">(events/hr)</span><span class="req">*</span></label>
+        <input type="number" id="psg_ahi" placeholder="—" min="0" max="200" step="0.1" />
+      </div>
+      <div class="field">
+        <label>ODI <span class="unit">(events/hr)</span></label>
+        <input type="number" id="psg_odi" placeholder="—" min="0" max="200" step="0.1" />
+        <span class="field-hint">Oxygen desaturation index</span>
+      </div>
+      <div class="field">
+        <label>T90 <span class="unit">(%)</span></label>
+        <input type="number" id="psg_t90" placeholder="—" min="0" max="100" step="0.1" />
+        <span class="field-hint">% time SpO₂ &lt;90%</span>
+      </div>
+      <div class="field">
+        <label>PSG Date Relative to DISE <span class="unit">(days)</span></label>
+        <input type="number" id="psg_to_dise_days" placeholder="—" min="0" max="3650" />
+        <span class="field-hint">Days between PSG and first DISE session</span>
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field-section-label">Position &amp; Stage Distribution</div>
+      <div class="field">
+        <label>Supine AHI <span class="unit">(events/hr)</span></label>
+        <input type="number" id="supine_ahi" placeholder="—" min="0" max="200" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Non-supine AHI <span class="unit">(events/hr)</span></label>
+        <input type="number" id="nonsupine_ahi" placeholder="—" min="0" max="200" step="0.1" />
+      </div>
+      <div class="field">
+        <label>REM AHI <span class="unit">(events/hr)</span></label>
+        <input type="number" id="rem_ahi" placeholder="—" min="0" max="200" step="0.1" />
+      </div>
+      <div class="field">
+        <label>NREM AHI <span class="unit">(events/hr)</span></label>
+        <input type="number" id="nrem_ahi" placeholder="—" min="0" max="200" step="0.1" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 4: DISE Session 1 — Procedure ───────────────── -->
+<div class="section-card" data-section="4">
+  <div class="section-head">
+    <div class="section-icon">🔬</div>
+    <div><h2>DISE Session 1 — Procedural Data</h2><p>Sedation parameters, positional data, and adverse events</p></div>
+  </div>
+  <div class="section-body">
+    <div class="session-banner">
+      <span>🟣</span>
+      <div><strong>Session 1</strong> &nbsp;·&nbsp; Procedural &amp; Sedation Parameters</div>
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>Session Date <span class="req">*</span></label>
+        <input type="date" id="s1_date" />
+      </div>
+      <div class="field">
+        <label>Session Start Time</label>
+        <input type="time" id="s1_time" />
+      </div>
+      <div class="field">
+        <label>Sedative Agent Used</label>
+        <select id="s1_sedative_agent">
+          <option value="">— Select —</option>
+          <option>Propofol</option>
+          <option>Dexmedetomidine</option>
+          <option>Midazolam</option>
+          <option>Midazolam + Propofol</option>
+          <option>Propofol + Dexmedetomidine</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Sedative Dose / Titration <span class="unit">(mg or mcg/kg)</span></label>
+        <input type="text" id="s1_sedative_dose" placeholder="e.g. Propofol 1.5 mg/kg TCI" />
+      </div>
+      <div class="field">
+        <label>Target BIS Value</label>
+        <input type="number" id="s1_target_bis" placeholder="—" min="0" max="100" />
+        <span class="field-hint">Bispectral Index — target sedation depth</span>
+      </div>
+      <div class="field">
+        <label>Achieved BIS <span class="unit">(mean / median)</span></label>
+        <input type="number" id="s1_achieved_bis" placeholder="—" min="0" max="100" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Time to Target Sedation <span class="unit">(min)</span></label>
+        <input type="number" id="s1_time_to_target" placeholder="—" min="0" max="60" step="0.5" />
+      </div>
+      <div class="field">
+        <label>Duration of Examination <span class="unit">(min)</span></label>
+        <input type="number" id="s1_duration" placeholder="—" min="0" max="120" step="0.5" />
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field-section-label">Adverse Events</div>
+      <div class="field">
+        <label>Oxygen Desaturation?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s1_desat" id="s1_desat_y" value="Yes"><label for="s1_desat_y">Yes</label>
+          <input type="radio" name="s1_desat" id="s1_desat_n" value="No"><label for="s1_desat_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Airway Obstruction Requiring Intervention?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s1_airway" id="s1_airway_y" value="Yes"><label for="s1_airway_y">Yes</label>
+          <input type="radio" name="s1_airway" id="s1_airway_n" value="No"><label for="s1_airway_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Haemodynamic Instability?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s1_haemo" id="s1_haemo_y" value="Yes"><label for="s1_haemo_y">Yes</label>
+          <input type="radio" name="s1_haemo" id="s1_haemo_n" value="No"><label for="s1_haemo_n">No</label>
+        </div>
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field-section-label">Positional Data</div>
+      <div class="field">
+        <label>Supine Position Examined?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s1_supine" id="s1_sup_y" value="Yes"><label for="s1_sup_y">Yes</label>
+          <input type="radio" name="s1_supine" id="s1_sup_n" value="No"><label for="s1_sup_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Supine Duration <span class="unit">(min)</span></label>
+        <input type="number" id="s1_supine_duration" placeholder="—" min="0" max="60" step="0.5" />
+      </div>
+      <div class="field">
+        <label>Lateral Position Examined?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s1_lateral" id="s1_lat_y" value="Yes"><label for="s1_lat_y">Yes</label>
+          <input type="radio" name="s1_lateral" id="s1_lat_n" value="No"><label for="s1_lat_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Lateral Duration <span class="unit">(min)</span></label>
+        <input type="number" id="s1_lateral_duration" placeholder="—" min="0" max="60" step="0.5" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 5: DISE Session 1 — VOTE ────────────────────── -->
+<div class="section-card" data-section="5">
+  <div class="section-head">
+    <div class="section-icon">👁</div>
+    <div><h2>DISE Session 1 — VOTE Classification</h2><p>Endoscopic collapse scoring per structure and position</p></div>
+  </div>
+  <div class="section-body">
+    <div class="session-banner">
+      <span>🟣</span>
+      <div><strong>Session 1</strong> &nbsp;·&nbsp; VOTE Classification + Video Metadata<br>
+      <span style="font-size:10.5px;opacity:.8;">Degree: 0 = none · 1 = partial · 2 = complete &nbsp;|&nbsp; Pattern: AP = anteroposterior</span></div>
+    </div>
+    <div class="field-grid">
+      <div class="vote-wrapper">
+        <table class="vote-table">
+          <thead>
+            <tr>
+              <th style="width:130px">Structure</th>
+              <th class="pos-header" colspan="2">Supine</th>
+              <th class="pos-separator"></th>
+              <th class="pos-header" colspan="2">Lateral</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th>Degree</th><th>Pattern</th>
+              <th class="pos-separator"></th>
+              <th>Degree</th><th>Pattern</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="vote-structure-label">V — Velum<span>Soft palate</span></div></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_v_sup_deg" id="s1_v_sup_d0" value="0"><label for="s1_v_sup_d0">0</label>
+                  <input type="radio" name="s1_v_sup_deg" id="s1_v_sup_d1" value="1"><label for="s1_v_sup_d1">1</label>
+                  <input type="radio" name="s1_v_sup_deg" id="s1_v_sup_d2" value="2"><label for="s1_v_sup_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_v_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_v_lat_deg" id="s1_v_lat_d0" value="0"><label for="s1_v_lat_d0">0</label>
+                  <input type="radio" name="s1_v_lat_deg" id="s1_v_lat_d1" value="1"><label for="s1_v_lat_d1">1</label>
+                  <input type="radio" name="s1_v_lat_deg" id="s1_v_lat_d2" value="2"><label for="s1_v_lat_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_v_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+            <tr>
+              <td><div class="vote-structure-label">O — Oropharynx<span>Lateral walls</span></div></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_o_sup_deg" id="s1_o_sup_d0" value="0"><label for="s1_o_sup_d0">0</label>
+                  <input type="radio" name="s1_o_sup_deg" id="s1_o_sup_d1" value="1"><label for="s1_o_sup_d1">1</label>
+                  <input type="radio" name="s1_o_sup_deg" id="s1_o_sup_d2" value="2"><label for="s1_o_sup_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_o_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_o_lat_deg" id="s1_o_lat_d0" value="0"><label for="s1_o_lat_d0">0</label>
+                  <input type="radio" name="s1_o_lat_deg" id="s1_o_lat_d1" value="1"><label for="s1_o_lat_d1">1</label>
+                  <input type="radio" name="s1_o_lat_deg" id="s1_o_lat_d2" value="2"><label for="s1_o_lat_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_o_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+            <tr>
+              <td><div class="vote-structure-label">T — Tongue Base<span>Hypopharynx</span></div></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_t_sup_deg" id="s1_t_sup_d0" value="0"><label for="s1_t_sup_d0">0</label>
+                  <input type="radio" name="s1_t_sup_deg" id="s1_t_sup_d1" value="1"><label for="s1_t_sup_d1">1</label>
+                  <input type="radio" name="s1_t_sup_deg" id="s1_t_sup_d2" value="2"><label for="s1_t_sup_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_t_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_t_lat_deg" id="s1_t_lat_d0" value="0"><label for="s1_t_lat_d0">0</label>
+                  <input type="radio" name="s1_t_lat_deg" id="s1_t_lat_d1" value="1"><label for="s1_t_lat_d1">1</label>
+                  <input type="radio" name="s1_t_lat_deg" id="s1_t_lat_d2" value="2"><label for="s1_t_lat_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_t_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+            <tr>
+              <td><div class="vote-structure-label">E — Epiglottis<span>Supraglottic</span></div></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_e_sup_deg" id="s1_e_sup_d0" value="0"><label for="s1_e_sup_d0">0</label>
+                  <input type="radio" name="s1_e_sup_deg" id="s1_e_sup_d1" value="1"><label for="s1_e_sup_d1">1</label>
+                  <input type="radio" name="s1_e_sup_deg" id="s1_e_sup_d2" value="2"><label for="s1_e_sup_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_e_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td>
+                <div class="degree-toggle">
+                  <input type="radio" name="s1_e_lat_deg" id="s1_e_lat_d0" value="0"><label for="s1_e_lat_d0">0</label>
+                  <input type="radio" name="s1_e_lat_deg" id="s1_e_lat_d1" value="1"><label for="s1_e_lat_d1">1</label>
+                  <input type="radio" name="s1_e_lat_deg" id="s1_e_lat_d2" value="2"><label for="s1_e_lat_d2">2</label>
+                </div>
+              </td>
+              <td><select id="s1_e_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="field field-span-2">
+        <label>Additional Structures Beyond VOTE</label>
+        <input type="text" id="s1_additional_structures" placeholder="e.g. Nasal: partial collapse; Hypopharynx: complete AP…" />
+      </div>
+      <div class="video-card">
+        <div class="video-card-head">📹 Video Metadata</div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Video File ID <span class="unit">(de-identified code)</span></label>
+            <input type="text" id="s1_video_id" placeholder="e.g. V-DISE-001-S1" />
+          </div>
+          <div class="field">
+            <label>Video Quality</label>
+            <div class="toggle-group">
+              <input type="radio" name="s1_video_quality" id="s1_vq_ok" value="Adequate"><label for="s1_vq_ok">Adequate</label>
+              <input type="radio" name="s1_video_quality" id="s1_vq_poor" value="Inadequate"><label for="s1_vq_poor">Inadequate</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Timestamp Markers / Notes</label>
+            <input type="text" id="s1_timestamps" placeholder="e.g. 00:45 Velum; 01:30 Tongue base…" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 6: DISE Session 2 — Procedure ───────────────── -->
+<div class="section-card" data-section="6">
+  <div class="section-head">
+    <div class="section-icon">🔬</div>
+    <div><h2>DISE Session 2 — Procedural Data</h2><p>Sedation parameters, positional data, and adverse events</p></div>
+  </div>
+  <div class="section-body">
+    <div class="session-banner" style="background:#fdf4ff;border-color:#e9d5ff;">
+      <span>🟡</span>
+      <div><strong>Session 2</strong> &nbsp;·&nbsp; Procedural &amp; Sedation Parameters</div>
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>Session Date <span class="req">*</span></label>
+        <input type="date" id="s2_date" />
+      </div>
+      <div class="field">
+        <label>Session Start Time</label>
+        <input type="time" id="s2_time" />
+      </div>
+      <div class="field">
+        <label>Session Interval from S1 <span class="unit">(days)</span></label>
+        <input type="number" id="s2_interval_days" placeholder="—" min="0" max="365" />
+        <span class="field-hint">Days between Session 1 and Session 2</span>
+      </div>
+      <div class="field">
+        <label>Sedative Agent Used</label>
+        <select id="s2_sedative_agent">
+          <option value="">— Select —</option>
+          <option>Propofol</option><option>Dexmedetomidine</option><option>Midazolam</option>
+          <option>Midazolam + Propofol</option><option>Propofol + Dexmedetomidine</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Sedative Dose / Titration</label>
+        <input type="text" id="s2_sedative_dose" placeholder="e.g. Propofol 1.5 mg/kg TCI" />
+      </div>
+      <div class="field">
+        <label>Target BIS Value</label>
+        <input type="number" id="s2_target_bis" placeholder="—" min="0" max="100" />
+      </div>
+      <div class="field">
+        <label>Achieved BIS <span class="unit">(mean / median)</span></label>
+        <input type="number" id="s2_achieved_bis" placeholder="—" min="0" max="100" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Time to Target Sedation <span class="unit">(min)</span></label>
+        <input type="number" id="s2_time_to_target" placeholder="—" min="0" max="60" step="0.5" />
+      </div>
+      <div class="field">
+        <label>Duration of Examination <span class="unit">(min)</span></label>
+        <input type="number" id="s2_duration" placeholder="—" min="0" max="120" step="0.5" />
+      </div>
+      <div class="field-divider"></div>
+      <div class="field-section-label">Adverse Events</div>
+      <div class="field">
+        <label>Oxygen Desaturation?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s2_desat" id="s2_desat_y" value="Yes"><label for="s2_desat_y">Yes</label>
+          <input type="radio" name="s2_desat" id="s2_desat_n" value="No"><label for="s2_desat_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Airway Obstruction Requiring Intervention?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s2_airway" id="s2_airway_y" value="Yes"><label for="s2_airway_y">Yes</label>
+          <input type="radio" name="s2_airway" id="s2_airway_n" value="No"><label for="s2_airway_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Haemodynamic Instability?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s2_haemo" id="s2_haemo_y" value="Yes"><label for="s2_haemo_y">Yes</label>
+          <input type="radio" name="s2_haemo" id="s2_haemo_n" value="No"><label for="s2_haemo_n">No</label>
+        </div>
+      </div>
+      <div class="field-divider"></div>
+      <div class="field-section-label">Positional Data</div>
+      <div class="field">
+        <label>Supine Position Examined?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s2_supine" id="s2_sup_y" value="Yes"><label for="s2_sup_y">Yes</label>
+          <input type="radio" name="s2_supine" id="s2_sup_n" value="No"><label for="s2_sup_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Supine Duration <span class="unit">(min)</span></label>
+        <input type="number" id="s2_supine_duration" placeholder="—" min="0" max="60" step="0.5" />
+      </div>
+      <div class="field">
+        <label>Lateral Position Examined?</label>
+        <div class="toggle-group">
+          <input type="radio" name="s2_lateral" id="s2_lat_y" value="Yes"><label for="s2_lat_y">Yes</label>
+          <input type="radio" name="s2_lateral" id="s2_lat_n" value="No"><label for="s2_lat_n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Lateral Duration <span class="unit">(min)</span></label>
+        <input type="number" id="s2_lateral_duration" placeholder="—" min="0" max="60" step="0.5" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 7: DISE Session 2 — VOTE ────────────────────── -->
+<div class="section-card" data-section="7">
+  <div class="section-head">
+    <div class="section-icon">👁</div>
+    <div><h2>DISE Session 2 — VOTE Classification</h2><p>Endoscopic collapse scoring per structure and position</p></div>
+  </div>
+  <div class="section-body">
+    <div class="session-banner" style="background:#fdf4ff;border-color:#e9d5ff;">
+      <span>🟡</span>
+      <div><strong>Session 2</strong> &nbsp;·&nbsp; VOTE Classification + Video Metadata<br>
+      <span style="font-size:10.5px;opacity:.8;">Degree: 0 = none · 1 = partial · 2 = complete &nbsp;|&nbsp; Pattern: AP = anteroposterior</span></div>
+    </div>
+    <div class="field-grid">
+      <div class="vote-wrapper">
+        <table class="vote-table">
+          <thead>
+            <tr>
+              <th style="width:130px">Structure</th>
+              <th class="pos-header" colspan="2">Supine</th>
+              <th class="pos-separator"></th>
+              <th class="pos-header" colspan="2">Lateral</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th>Degree</th><th>Pattern</th>
+              <th class="pos-separator"></th>
+              <th>Degree</th><th>Pattern</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="vote-structure-label">V — Velum<span>Soft palate</span></div></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_v_sup_deg" id="s2_v_sup_d0" value="0"><label for="s2_v_sup_d0">0</label><input type="radio" name="s2_v_sup_deg" id="s2_v_sup_d1" value="1"><label for="s2_v_sup_d1">1</label><input type="radio" name="s2_v_sup_deg" id="s2_v_sup_d2" value="2"><label for="s2_v_sup_d2">2</label></div></td>
+              <td><select id="s2_v_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_v_lat_deg" id="s2_v_lat_d0" value="0"><label for="s2_v_lat_d0">0</label><input type="radio" name="s2_v_lat_deg" id="s2_v_lat_d1" value="1"><label for="s2_v_lat_d1">1</label><input type="radio" name="s2_v_lat_deg" id="s2_v_lat_d2" value="2"><label for="s2_v_lat_d2">2</label></div></td>
+              <td><select id="s2_v_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+            <tr>
+              <td><div class="vote-structure-label">O — Oropharynx<span>Lateral walls</span></div></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_o_sup_deg" id="s2_o_sup_d0" value="0"><label for="s2_o_sup_d0">0</label><input type="radio" name="s2_o_sup_deg" id="s2_o_sup_d1" value="1"><label for="s2_o_sup_d1">1</label><input type="radio" name="s2_o_sup_deg" id="s2_o_sup_d2" value="2"><label for="s2_o_sup_d2">2</label></div></td>
+              <td><select id="s2_o_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_o_lat_deg" id="s2_o_lat_d0" value="0"><label for="s2_o_lat_d0">0</label><input type="radio" name="s2_o_lat_deg" id="s2_o_lat_d1" value="1"><label for="s2_o_lat_d1">1</label><input type="radio" name="s2_o_lat_deg" id="s2_o_lat_d2" value="2"><label for="s2_o_lat_d2">2</label></div></td>
+              <td><select id="s2_o_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+            <tr>
+              <td><div class="vote-structure-label">T — Tongue Base<span>Hypopharynx</span></div></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_t_sup_deg" id="s2_t_sup_d0" value="0"><label for="s2_t_sup_d0">0</label><input type="radio" name="s2_t_sup_deg" id="s2_t_sup_d1" value="1"><label for="s2_t_sup_d1">1</label><input type="radio" name="s2_t_sup_deg" id="s2_t_sup_d2" value="2"><label for="s2_t_sup_d2">2</label></div></td>
+              <td><select id="s2_t_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_t_lat_deg" id="s2_t_lat_d0" value="0"><label for="s2_t_lat_d0">0</label><input type="radio" name="s2_t_lat_deg" id="s2_t_lat_d1" value="1"><label for="s2_t_lat_d1">1</label><input type="radio" name="s2_t_lat_deg" id="s2_t_lat_d2" value="2"><label for="s2_t_lat_d2">2</label></div></td>
+              <td><select id="s2_t_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+            <tr>
+              <td><div class="vote-structure-label">E — Epiglottis<span>Supraglottic</span></div></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_e_sup_deg" id="s2_e_sup_d0" value="0"><label for="s2_e_sup_d0">0</label><input type="radio" name="s2_e_sup_deg" id="s2_e_sup_d1" value="1"><label for="s2_e_sup_d1">1</label><input type="radio" name="s2_e_sup_deg" id="s2_e_sup_d2" value="2"><label for="s2_e_sup_d2">2</label></div></td>
+              <td><select id="s2_e_sup_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+              <td class="pos-separator"></td>
+              <td><div class="degree-toggle"><input type="radio" name="s2_e_lat_deg" id="s2_e_lat_d0" value="0"><label for="s2_e_lat_d0">0</label><input type="radio" name="s2_e_lat_deg" id="s2_e_lat_d1" value="1"><label for="s2_e_lat_d1">1</label><input type="radio" name="s2_e_lat_deg" id="s2_e_lat_d2" value="2"><label for="s2_e_lat_d2">2</label></div></td>
+              <td><select id="s2_e_lat_pat"><option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option></select></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="field field-span-2">
+        <label>Additional Structures Beyond VOTE</label>
+        <input type="text" id="s2_additional_structures" placeholder="e.g. Nasal: partial collapse; Hypopharynx: complete AP…" />
+      </div>
+      <div class="video-card">
+        <div class="video-card-head">📹 Video Metadata</div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Video File ID <span class="unit">(de-identified code)</span></label>
+            <input type="text" id="s2_video_id" placeholder="e.g. V-DISE-001-S2" />
+          </div>
+          <div class="field">
+            <label>Video Quality</label>
+            <div class="toggle-group">
+              <input type="radio" name="s2_video_quality" id="s2_vq_ok" value="Adequate"><label for="s2_vq_ok">Adequate</label>
+              <input type="radio" name="s2_video_quality" id="s2_vq_poor" value="Inadequate"><label for="s2_vq_poor">Inadequate</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Timestamp Markers / Notes</label>
+            <input type="text" id="s2_timestamps" placeholder="e.g. 00:45 Velum; 01:30 Tongue base…" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 8: Observer Scoring (dynamic) ───────────────── -->
+<div class="section-card" data-section="8">
+  <div class="section-head">
+    <div class="section-icon">🔍</div>
+    <div><h2>Independent Observer Scoring</h2><p>Blinded VOTE scores stored in a separate <strong>Observer Scores</strong> tab — linked to the Patient CRF by Study ID</p></div>
+  </div>
+  <div class="section-body">
+    <div class="alert alert-note">
+      <span>ℹ️</span>
+      <div>This section is completed by <strong>blinded observers</strong> after de-identified video review. On submission, each observer's scores are written as a separate row in the <strong>Observer Scores</strong> tab of the Google Sheet, linked to this patient by Study ID.</div>
+    </div>
+
+    <div id="observers-container"></div>
+
+    <button class="btn btn-ghost" onclick="addObserver()" style="margin-top:8px;width:100%;justify-content:center;border-style:dashed;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      Add Observer
+    </button>
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:8px;text-align:center;">
+      <span id="observer-count-label">2 observers</span> &nbsp;·&nbsp; Observer data stored as structured JSON in the Sheet
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── STEP 9: Consensus & Treatment ─────────────────────── -->
+<div class="section-card" data-section="9">
+  <div class="section-head">
+    <div class="section-icon">⚖️</div>
+    <div><h2>Consensus &amp; Treatment Outcome</h2><p>Adjudicator-resolved VOTE classification and treatment recommendation</p></div>
+  </div>
+  <div class="section-body">
+    <div class="alert alert-warn">
+      <span>⚠️</span>
+      <div>Consensus VOTE is resolved by a <strong>third adjudicating observer</strong> for treatment recommendation only — not used in the primary agreement analysis. Record per-session.</div>
+    </div>
+    <div class="field-grid">
+      <div class="field-section-label">Session 1 — Adjudicator Consensus VOTE</div>
+      <div class="field"><label>Velum</label><select id="con_s1_velum"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field"><label>Oropharynx</label><select id="con_s1_oropharynx"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field"><label>Tongue Base</label><select id="con_s1_tongue"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field"><label>Epiglottis</label><select id="con_s1_epiglottis"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field field-span-2">
+        <label>Session 1 Treatment Recommendation</label>
+        <select id="tx_s1">
+          <option value="">— Select —</option>
+          <option>Upper Airway Surgery</option>
+          <option>Oral Appliance Therapy</option>
+          <option>Hypoglossal Nerve Stimulation (HGNS)</option>
+          <option>Combined Surgical + Device</option>
+          <option>No Intervention / Conservative</option>
+          <option>Further Investigation Required</option>
+        </select>
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field-section-label">Session 2 — Adjudicator Consensus VOTE</div>
+      <div class="field"><label>Velum</label><select id="con_s2_velum"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field"><label>Oropharynx</label><select id="con_s2_oropharynx"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field"><label>Tongue Base</label><select id="con_s2_tongue"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field"><label>Epiglottis</label><select id="con_s2_epiglottis"><option value="">—</option><option>0 — None</option><option>1 — Partial</option><option>2 — Complete</option></select></div>
+      <div class="field field-span-2">
+        <label>Session 2 Treatment Recommendation</label>
+        <select id="tx_s2">
+          <option value="">— Select —</option>
+          <option>Upper Airway Surgery</option>
+          <option>Oral Appliance Therapy</option>
+          <option>Hypoglossal Nerve Stimulation (HGNS)</option>
+          <option>Combined Surgical + Device</option>
+          <option>No Intervention / Conservative</option>
+          <option>Further Investigation Required</option>
+        </select>
+      </div>
+
+      <div class="field-divider"></div>
+      <div class="field field-span-2">
+        <label>Treatment Recommendation Concordance <span class="unit">(S1 vs S2)</span></label>
+        <div class="toggle-group">
+          <input type="radio" name="tx_concordance" id="conc_yes" value="Concordant"><label for="conc_yes">Concordant</label>
+          <input type="radio" name="tx_concordance" id="conc_no" value="Discordant"><label for="conc_no">Discordant</label>
+        </div>
+      </div>
+      <div class="field field-span-2">
+        <label>Concordance Notes</label>
+        <textarea id="concordance_notes" placeholder="Describe any discordance, adjudicator reasoning, or qualifying observations…"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── STEP 10: Review ────────────────────────────────────── -->
+<div class="section-card" data-section="10">
+  <div class="section-head">
+    <div class="section-icon">✅</div>
+    <div><h2>Review &amp; Submit</h2><p>Verify all entries before sending to the study database</p></div>
+  </div>
+  <div class="section-body">
+    <div id="review-container"></div>
+    <div class="alert alert-warn" id="no-script-warning" style="display:none;margin-top:16px;">
+      <span>⚠️</span>
+      <div><strong>Google Sheets not configured.</strong> Open <code>config.js</code> and paste your Apps Script URL into <code>SCRIPT_URL</code>.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /form-wrapper -->
+
+<!-- Success Screen -->
+<div id="success-screen">
+  <div class="success-icon">✓</div>
+  <h2>Record Submitted</h2>
+  <p>Patient CRF data has been sent to the study Google Sheet.</p>
+  <div class="meta" id="success-meta"></div>
+  <button class="btn btn-primary" onclick="resetForm()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 4V1L8 5l4 4V6a6 6 0 110 12 6 6 0 01-5.2-3"/></svg>
+    New Entry
+  </button>
+</div>
+</main>
+
+<!-- Nav Bar -->
+<nav class="nav-bar" id="navBar">
+  <div class="nav-info">Step <strong id="stepLabel">1</strong> of <strong>10</strong> &nbsp;·&nbsp; <span id="sectionName">Screening</span></div>
+  <div class="nav-btns">
+    <button class="btn btn-ghost" id="btnPrev" onclick="prevStep()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>Back
+    </button>
+    <button class="btn btn-primary" id="btnNext" onclick="nextStep()">
+      Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="btn btn-submit" id="btnSubmit" style="display:none" onclick="submitForm()">
+      <span id="submitLabel">Submit to Sheet</span>
+      <div class="spinner" id="submitSpinner" style="display:none"></div>
+    </button>
+  </div>
+</nav>
+
+<script src="config.js"></script>
+<script>
+  let currentStep = 0;
+  const TOTAL_STEPS = 11;
+  const SECTION_NAMES = [
+    'Screening & Eligibility','Demographics','Clinical Data','PSG Data',
+    'Session 1 — Procedure','Session 1 — VOTE',
+    'Session 2 — Procedure','Session 2 — VOTE',
+    'Observer Scoring','Consensus & Treatment','Review'
+  ];
+
+  function updateNav() {
+    document.getElementById('stepLabel').textContent = currentStep + 1;
+    document.getElementById('sectionName').textContent = SECTION_NAMES[currentStep];
+    document.getElementById('btnPrev').style.display = currentStep === 0 ? 'none' : '';
+    document.getElementById('btnNext').style.display = currentStep === 10 ? 'none' : '';
+    document.getElementById('btnSubmit').style.display = currentStep === 10 ? '' : 'none';
+    document.querySelectorAll('.prog-step').forEach((el, i) => {
+      el.classList.remove('active','completed');
+      if (i === currentStep) el.classList.add('active');
+      else if (i < currentStep) el.classList.add('completed');
+    });
+    document.querySelectorAll('.section-card').forEach((el, i) => {
+      el.classList.toggle('active', i === currentStep);
+    });
+    if (currentStep === 10) {
+      buildReview();
+      const configured = SCRIPT_URL && SCRIPT_URL !== 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+      document.getElementById('no-script-warning').style.display = configured ? 'none' : '';
+    }
+  }
+
+  function nextStep() { if (currentStep < 10) { currentStep++; updateNav(); window.scrollTo({top:0,behavior:'smooth'}); } }
+  function prevStep() { if (currentStep > 0)  { currentStep--; updateNav(); window.scrollTo({top:0,behavior:'smooth'}); } }
+  function jumpToStep(n) { if (n <= currentStep) { currentStep = n; updateNav(); window.scrollTo({top:0,behavior:'smooth'}); } }
+
+  function calcBMI() {
+    const h = parseFloat(document.getElementById('height').value);
+    const w = parseFloat(document.getElementById('weight').value);
+    if (h > 0 && w > 0) document.getElementById('bmi').value = (w/((h/100)**2)).toFixed(1);
+  }
+
+  function togglePregnancy() {
+    const sex = document.getElementById('sex').value;
+    const el = document.getElementById('pregnancy_field');
+    el.classList.toggle('show', sex === 'Female');
+    if (sex === 'Female') el.style.display = 'flex';
+    else el.style.display = 'none';
+  }
+  function toggleUAW() {
+    const v = document.querySelector('input[name="prior_uaw"]:checked')?.value;
+    document.getElementById('uaw_details_field').classList.toggle('show', v === 'Yes');
+  }
+  function toggleAllergy() {
+    const v = document.querySelector('input[name="sed_allergy"]:checked')?.value;
+    document.getElementById('allergy_details_field').classList.toggle('show', v === 'Yes');
+  }
+
+  function getRadio(name) { return document.querySelector(`input[name="${name}"]:checked`)?.value ?? ''; }
+  function getVal(id)     { return document.getElementById(id)?.value?.trim() ?? ''; }
+  function getComorbidities() {
+    const ids = ['cmb_htn','cmb_dm','cmb_cvd','cmb_hypo','cmb_gerd','cmb_other'];
+    const labels = ['Hypertension','Diabetes','CVD','Hypothyroidism','GERD','Other'];
+    return ids.map((id,i) => document.getElementById(id)?.checked ? labels[i] : null).filter(Boolean).join(', ') || '';
+  }
+
+  function collectData() {
+    return {
+      timestamp: new Date().toISOString(),
+      // Screening
+      study_id: getVal('study_id'), consent_date: getVal('consent_date'),
+      age: getVal('age'), sex: getVal('sex'), dob: getVal('dob'),
+      pregnancy_status: getRadio('pregnancy'),
+      screen_ahi: getVal('screen_ahi'), psg_date: getVal('psg_date'),
+      symptom_status: getRadio('symptom_status'), asa_grade: getVal('asa_grade'),
+      referral_indication: getVal('referral_indication'),
+      prior_uaw_surgery: getRadio('prior_uaw'), uaw_surgery_details: getVal('uaw_surgery_details'),
+      current_urti: getRadio('current_urti'),
+      sedative_allergy: getRadio('sed_allergy'), sed_allergy_details: getVal('sed_allergy_details'),
+      // Demographics
+      height_cm: getVal('height'), weight_kg: getVal('weight'), bmi: getVal('bmi'),
+      neck_circumference_cm: getVal('neck_circumference'),
+      waist_hip_ratio: getVal('waist_hip_ratio'), ethnicity: getVal('ethnicity'),
+      // Clinical
+      ess_score: getVal('ess_score'), comorbidities: getComorbidities(),
+      comorbidity_other: getVal('comorbidity_other'), medications: getVal('medications'),
+      smoking: getVal('smoking'), alcohol: getVal('alcohol'),
+      // PSG
+      psg_ahi: getVal('psg_ahi'), psg_odi: getVal('psg_odi'),
+      psg_t90: getVal('psg_t90'), psg_to_dise_days: getVal('psg_to_dise_days'),
+      supine_ahi: getVal('supine_ahi'), nonsupine_ahi: getVal('nonsupine_ahi'),
+      rem_ahi: getVal('rem_ahi'), nrem_ahi: getVal('nrem_ahi'),
+      // Session 1 — Procedure
+      s1_date: getVal('s1_date'), s1_time: getVal('s1_time'),
+      s1_sedative_agent: getVal('s1_sedative_agent'), s1_sedative_dose: getVal('s1_sedative_dose'),
+      s1_target_bis: getVal('s1_target_bis'), s1_achieved_bis: getVal('s1_achieved_bis'),
+      s1_time_to_target: getVal('s1_time_to_target'), s1_duration: getVal('s1_duration'),
+      s1_adverse_desat: getRadio('s1_desat'), s1_adverse_airway: getRadio('s1_airway'),
+      s1_adverse_haemo: getRadio('s1_haemo'),
+      s1_supine: getRadio('s1_supine'), s1_supine_duration: getVal('s1_supine_duration'),
+      s1_lateral: getRadio('s1_lateral'), s1_lateral_duration: getVal('s1_lateral_duration'),
+      // Session 1 VOTE
+      s1_v_sup_deg: getRadio('s1_v_sup_deg'), s1_v_sup_pat: getVal('s1_v_sup_pat'),
+      s1_v_lat_deg: getRadio('s1_v_lat_deg'), s1_v_lat_pat: getVal('s1_v_lat_pat'),
+      s1_o_sup_deg: getRadio('s1_o_sup_deg'), s1_o_sup_pat: getVal('s1_o_sup_pat'),
+      s1_o_lat_deg: getRadio('s1_o_lat_deg'), s1_o_lat_pat: getVal('s1_o_lat_pat'),
+      s1_t_sup_deg: getRadio('s1_t_sup_deg'), s1_t_sup_pat: getVal('s1_t_sup_pat'),
+      s1_t_lat_deg: getRadio('s1_t_lat_deg'), s1_t_lat_pat: getVal('s1_t_lat_pat'),
+      s1_e_sup_deg: getRadio('s1_e_sup_deg'), s1_e_sup_pat: getVal('s1_e_sup_pat'),
+      s1_e_lat_deg: getRadio('s1_e_lat_deg'), s1_e_lat_pat: getVal('s1_e_lat_pat'),
+      s1_additional: getVal('s1_additional_structures'),
+      s1_video_id: getVal('s1_video_id'), s1_video_quality: getRadio('s1_video_quality'),
+      s1_timestamps: getVal('s1_timestamps'),
+      // Session 2 — Procedure
+      s2_date: getVal('s2_date'), s2_time: getVal('s2_time'),
+      s2_interval_days: getVal('s2_interval_days'),
+      s2_sedative_agent: getVal('s2_sedative_agent'), s2_sedative_dose: getVal('s2_sedative_dose'),
+      s2_target_bis: getVal('s2_target_bis'), s2_achieved_bis: getVal('s2_achieved_bis'),
+      s2_time_to_target: getVal('s2_time_to_target'), s2_duration: getVal('s2_duration'),
+      s2_adverse_desat: getRadio('s2_desat'), s2_adverse_airway: getRadio('s2_airway'),
+      s2_adverse_haemo: getRadio('s2_haemo'),
+      s2_supine: getRadio('s2_supine'), s2_supine_duration: getVal('s2_supine_duration'),
+      s2_lateral: getRadio('s2_lateral'), s2_lateral_duration: getVal('s2_lateral_duration'),
+      // Session 2 VOTE
+      s2_v_sup_deg: getRadio('s2_v_sup_deg'), s2_v_sup_pat: getVal('s2_v_sup_pat'),
+      s2_v_lat_deg: getRadio('s2_v_lat_deg'), s2_v_lat_pat: getVal('s2_v_lat_pat'),
+      s2_o_sup_deg: getRadio('s2_o_sup_deg'), s2_o_sup_pat: getVal('s2_o_sup_pat'),
+      s2_o_lat_deg: getRadio('s2_o_lat_deg'), s2_o_lat_pat: getVal('s2_o_lat_pat'),
+      s2_t_sup_deg: getRadio('s2_t_sup_deg'), s2_t_sup_pat: getVal('s2_t_sup_pat'),
+      s2_t_lat_deg: getRadio('s2_t_lat_deg'), s2_t_lat_pat: getVal('s2_t_lat_pat'),
+      s2_e_sup_deg: getRadio('s2_e_sup_deg'), s2_e_sup_pat: getVal('s2_e_sup_pat'),
+      s2_e_lat_deg: getRadio('s2_e_lat_deg'), s2_e_lat_pat: getVal('s2_e_lat_pat'),
+      s2_additional: getVal('s2_additional_structures'),
+      s2_video_id: getVal('s2_video_id'), s2_video_quality: getRadio('s2_video_quality'),
+      s2_timestamps: getVal('s2_timestamps'),
+      // Observers — full data goes to Observer Scores tab; summary shown in review
+      observer_count:   getObserverCount(),
+      observer_ids:     getObserversData().map(o => o.id || '—').join(', '),
+      observers_json:   JSON.stringify(getObserversData()),
+      // Consensus
+      con_s1_velum: getVal('con_s1_velum'), con_s1_oropharynx: getVal('con_s1_oropharynx'),
+      con_s1_tongue: getVal('con_s1_tongue'), con_s1_epiglottis: getVal('con_s1_epiglottis'),
+      tx_s1: getVal('tx_s1'),
+      con_s2_velum: getVal('con_s2_velum'), con_s2_oropharynx: getVal('con_s2_oropharynx'),
+      con_s2_tongue: getVal('con_s2_tongue'), con_s2_epiglottis: getVal('con_s2_epiglottis'),
+      tx_s2: getVal('tx_s2'),
+      tx_concordance: getRadio('tx_concordance'), concordance_notes: getVal('concordance_notes'),
+    };
+  }
+
+  function buildReview() {
+    const d = collectData();
+    const sections = [
+      { title: '📋 Screening & Eligibility', keys: ['study_id','consent_date','age','sex','dob','screen_ahi','psg_date','symptom_status','asa_grade','referral_indication','prior_uaw_surgery','current_urti','sedative_allergy'] },
+      { title: '📐 Demographics', keys: ['height_cm','weight_kg','bmi','neck_circumference_cm','waist_hip_ratio','ethnicity'] },
+      { title: '🩺 Clinical', keys: ['ess_score','comorbidities','smoking','alcohol'] },
+      { title: '📈 PSG Data', keys: ['psg_ahi','psg_odi','psg_t90','psg_to_dise_days','supine_ahi','nonsupine_ahi','rem_ahi','nrem_ahi'] },
+      { title: '🔬 Session 1 — Procedure', keys: ['s1_date','s1_time','s1_sedative_agent','s1_target_bis','s1_achieved_bis','s1_duration','s1_adverse_desat','s1_adverse_airway','s1_adverse_haemo'] },
+      { title: '👁 Session 1 — VOTE', keys: ['s1_v_sup_deg','s1_v_sup_pat','s1_o_sup_deg','s1_o_sup_pat','s1_t_sup_deg','s1_t_sup_pat','s1_e_sup_deg','s1_e_sup_pat','s1_video_id','s1_video_quality'] },
+      { title: '🔬 Session 2 — Procedure', keys: ['s2_date','s2_time','s2_interval_days','s2_sedative_agent','s2_target_bis','s2_achieved_bis','s2_duration','s2_adverse_desat'] },
+      { title: '👁 Session 2 — VOTE', keys: ['s2_v_sup_deg','s2_v_sup_pat','s2_o_sup_deg','s2_o_sup_pat','s2_t_sup_deg','s2_t_sup_pat','s2_e_sup_deg','s2_e_sup_pat','s2_video_id','s2_video_quality'] },
+      { title: '🔍 Observer Scoring', keys: ['observer_count','observer_ids'] },
+      { title: '⚖️ Consensus & Treatment', keys: ['con_s1_velum','con_s1_oropharynx','con_s1_tongue','con_s1_epiglottis','tx_s1','con_s2_velum','tx_s2','tx_concordance'] },
+    ];
+    const labels = {
+      study_id:'Study ID', consent_date:'Consent Date', age:'Age', sex:'Sex', dob:'DOB',
+      screen_ahi:'AHI (screen)', psg_date:'PSG Date', symptom_status:'Symptom Status',
+      asa_grade:'ASA Grade', referral_indication:'Referral', prior_uaw_surgery:'Prior UAW Surg.',
+      current_urti:'URTI', sedative_allergy:'Sed. Allergy',
+      height_cm:'Height (cm)', weight_kg:'Weight (kg)', bmi:'BMI',
+      neck_circumference_cm:'Neck Circ. (cm)', waist_hip_ratio:'Waist-Hip Ratio', ethnicity:'Ethnicity',
+      ess_score:'ESS Score', comorbidities:'Comorbidities', smoking:'Smoking', alcohol:'Alcohol',
+      psg_ahi:'AHI', psg_odi:'ODI', psg_t90:'T90 (%)', psg_to_dise_days:'PSG→DISE (days)',
+      supine_ahi:'Supine AHI', nonsupine_ahi:'Non-supine AHI', rem_ahi:'REM AHI', nrem_ahi:'NREM AHI',
+      s1_date:'Date', s1_time:'Time', s1_sedative_agent:'Agent', s1_target_bis:'Target BIS',
+      s1_achieved_bis:'Achieved BIS', s1_duration:'Duration (min)',
+      s1_adverse_desat:'Desat', s1_adverse_airway:'Airway Obs.', s1_adverse_haemo:'Haemo.',
+      s1_v_sup_deg:'V Sup Degree', s1_v_sup_pat:'V Sup Pattern',
+      s1_o_sup_deg:'O Sup Degree', s1_o_sup_pat:'O Sup Pattern',
+      s1_t_sup_deg:'T Sup Degree', s1_t_sup_pat:'T Sup Pattern',
+      s1_e_sup_deg:'E Sup Degree', s1_e_sup_pat:'E Sup Pattern',
+      s1_video_id:'Video ID', s1_video_quality:'Video Quality',
+      s2_date:'Date', s2_time:'Time', s2_interval_days:'Interval (days)',
+      s2_sedative_agent:'Agent', s2_target_bis:'Target BIS', s2_achieved_bis:'Achieved BIS',
+      s2_duration:'Duration (min)', s2_adverse_desat:'Desat',
+      s2_v_sup_deg:'V Sup Degree', s2_v_sup_pat:'V Sup Pattern',
+      s2_o_sup_deg:'O Sup Degree', s2_o_sup_pat:'O Sup Pattern',
+      s2_t_sup_deg:'T Sup Degree', s2_t_sup_pat:'T Sup Pattern',
+      s2_e_sup_deg:'E Sup Degree', s2_e_sup_pat:'E Sup Pattern',
+      s2_video_id:'Video ID', s2_video_quality:'Video Quality',
+      observer_count:'Observers Entered', observer_ids:'Observer IDs',
+      con_s1_velum:'S1 Velum', con_s1_oropharynx:'S1 Oropharynx', con_s1_tongue:'S1 Tongue', con_s1_epiglottis:'S1 Epiglottis',
+      tx_s1:'S1 Treatment',
+      con_s2_velum:'S2 Velum', tx_s2:'S2 Treatment', tx_concordance:'Concordance',
+    };
+    let html = '';
+    for (const s of sections) {
+      html += `<div class="summary-section"><h3>${s.title}</h3><div class="summary-grid">`;
+      for (const k of s.keys) {
+        const val = d[k];
+        const isEmpty = !val;
+        html += `<div class="summary-item"><span class="s-label">${labels[k]||k}</span><span class="s-value${isEmpty?' empty':''}">${isEmpty?'—':val}</span></div>`;
+      }
+      html += `</div></div>`;
+    }
+    document.getElementById('review-container').innerHTML = html;
+  }
+
+  async function submitForm() {
+    if (!SCRIPT_URL || SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_URL_HERE') {
+      document.getElementById('no-script-warning').style.display = '';
+      alert('⚠️ Apps Script URL not configured. Open config.js and paste your URL into SCRIPT_URL.');
+      return;
+    }
+    const btn = document.getElementById('btnSubmit');
+    document.getElementById('submitLabel').style.display = 'none';
+    document.getElementById('submitSpinner').style.display = '';
+    btn.disabled = true;
+    const data = collectData();
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(data)
+      });
+      document.getElementById('form-wrapper').style.display = 'none';
+      document.getElementById('navBar').style.display = 'none';
+      const ss = document.getElementById('success-screen');
+      ss.classList.add('show');
+      document.getElementById('success-meta').textContent =
+        `Study ID: ${data.study_id||'—'}  ·  Submitted: ${new Date(data.timestamp).toLocaleString()}`;
+    } catch (err) {
+      document.getElementById('submitLabel').style.display = '';
+      document.getElementById('submitSpinner').style.display = 'none';
+      btn.disabled = false;
+      alert('⚠️ Submission failed. Check your network and Apps Script URL.\n\n' + err.message);
+    }
+  }
+
+  function resetForm() {
+    document.querySelectorAll('input[type=text],input[type=number],input[type=date],input[type=time],input[type=datetime-local],textarea').forEach(el => el.value = '');
+    document.querySelectorAll('select').forEach(el => el.value = '');
+    document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(el => el.checked = false);
+    ['uaw_details_field','allergy_details_field','pregnancy_field'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove('show'); el.style.display='none'; }
+    });
+    currentStep = 0;
+    document.getElementById('form-wrapper').style.display = '';
+    document.getElementById('navBar').style.display = '';
+    document.getElementById('success-screen').classList.remove('show');
+    document.getElementById('submitLabel').style.display = '';
+    document.getElementById('submitSpinner').style.display = 'none';
+    document.getElementById('btnSubmit').disabled = false;
+    updateNav();
+  }
+
+  /* ── Dynamic Observer Blocks ────────────────────────────── */
+  let observerCount = 0;
+
+  function voteTable(prefix) {
+    const structures = [
+      {code:'v', label:'V — Velum'},
+      {code:'o', label:'O — Oropharynx'},
+      {code:'t', label:'T — Tongue Base'},
+      {code:'e', label:'E — Epiglottis'}
+    ];
+    const pOpts = '<option value="">—</option><option>AP</option><option>Lateral</option><option>Concentric</option><option>N/A</option>';
+    let rows = '';
+    for (const s of structures) {
+      const p = `${prefix}_${s.code}`;
+      rows += `<tr>
+        <td><div class="vote-structure-label">${s.label}</div></td>
+        <td><div class="degree-toggle">
+          <input type="radio" name="${p}_sup_deg" id="${p}_sup_d0" value="0"><label for="${p}_sup_d0">0</label>
+          <input type="radio" name="${p}_sup_deg" id="${p}_sup_d1" value="1"><label for="${p}_sup_d1">1</label>
+          <input type="radio" name="${p}_sup_deg" id="${p}_sup_d2" value="2"><label for="${p}_sup_d2">2</label>
+        </div></td>
+        <td><select id="${p}_sup_pat">${pOpts}</select></td>
+        <td class="pos-separator"></td>
+        <td><div class="degree-toggle">
+          <input type="radio" name="${p}_lat_deg" id="${p}_lat_d0" value="0"><label for="${p}_lat_d0">0</label>
+          <input type="radio" name="${p}_lat_deg" id="${p}_lat_d1" value="1"><label for="${p}_lat_d1">1</label>
+          <input type="radio" name="${p}_lat_deg" id="${p}_lat_d2" value="2"><label for="${p}_lat_d2">2</label>
+        </div></td>
+        <td><select id="${p}_lat_pat">${pOpts}</select></td>
+      </tr>`;
+    }
+    return `<table class="vote-table">
+      <thead>
+        <tr><th style="width:130px">Structure</th><th class="pos-header" colspan="2">Supine</th><th class="pos-separator"></th><th class="pos-header" colspan="2">Lateral</th></tr>
+        <tr><th></th><th>Degree</th><th>Pattern</th><th class="pos-separator"></th><th>Degree</th><th>Pattern</th></tr>
+      </thead><tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function buildObserverBlock(uid, displayNum) {
+    const p = `obs${uid}`;
+    const canRemove = displayNum > 1;
+    return `<div class="observer-block" id="obs-block-${uid}" data-obs-uid="${uid}">
+      <div class="observer-block-head">
+        <span>👤 Observer ${displayNum}</span>
+        ${canRemove ? `<button class="remove-obs" onclick="removeObserver('${uid}')">✕ Remove</button>` : ''}
+      </div>
+      <div class="observer-block-body">
+        <div class="field-grid">
+          <div class="field">
+            <label>Observer ID <span class="unit">(blinded code)</span></label>
+            <input type="text" id="${p}_id" placeholder="e.g. OBS-${String.fromCharCode(64+displayNum)}" />
+          </div>
+          <div class="field">
+            <label>Date / Time of Scoring</label>
+            <input type="datetime-local" id="${p}_datetime" />
+          </div>
+          <div class="field">
+            <label>Confidence Rating <span class="unit">(1–5 Likert, optional)</span></label>
+            <select id="${p}_confidence">
+              <option value="">—</option>
+              <option>1 — Very Low</option><option>2 — Low</option><option>3 — Moderate</option>
+              <option>4 — High</option><option>5 — Very High</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Time to Score <span class="unit">(min, optional)</span></label>
+            <input type="number" id="${p}_time_to_score" placeholder="—" min="0" max="120" step="0.5" />
+          </div>
+          <div class="field-section-label">Session 1 VOTE — Observer ${displayNum}</div>
+          <div class="vote-wrapper">${voteTable(`${p}s1`)}</div>
+          <div class="field-section-label">Session 2 VOTE — Observer ${displayNum}</div>
+          <div class="vote-wrapper">${voteTable(`${p}s2`)}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function addObserver() {
+    observerCount++;
+    const uid = observerCount;
+    const container = document.getElementById('observers-container');
+    const displayNum = container.querySelectorAll('.observer-block').length + 1;
+    const div = document.createElement('div');
+    div.innerHTML = buildObserverBlock(uid, displayNum);
+    container.appendChild(div.firstElementChild);
+    // First observer: no remove button ever
+    if (displayNum === 1) {
+      const btn = document.querySelector('#obs-block-1 .remove-obs');
+      if (btn) btn.remove();
+    }
+    updateObserverLabel();
+  }
+
+  function removeObserver(uid) {
+    const block = document.getElementById(`obs-block-${uid}`);
+    if (block) block.remove();
+    // Renumber display labels
+    document.querySelectorAll('.observer-block').forEach((el, i) => {
+      el.querySelector('.observer-block-head span').textContent = `👤 Observer ${i+1}`;
+    });
+    updateObserverLabel();
+  }
+
+  function updateObserverLabel() {
+    const count = document.querySelectorAll('.observer-block').length;
+    document.getElementById('observer-count-label').textContent =
+      `${count} observer${count !== 1 ? 's' : ''}`;
+  }
+
+  function getObserverCount() {
+    return document.querySelectorAll('.observer-block').length;
+  }
+
+  function getObserversData() {
+    const structures = ['v','o','t','e'];
+    return Array.from(document.querySelectorAll('.observer-block')).map((block, i) => {
+      const uid  = block.dataset.obsUid;
+      const p    = `obs${uid}`;
+      const gv   = id   => document.getElementById(id)?.value?.trim() ?? '';
+      const gr   = name => document.querySelector(`input[name="${name}"]:checked`)?.value ?? '';
+      const vote = sess => {
+        const sp = `${p}s${sess}`;
+        const out = {};
+        for (const s of structures) {
+          out[`${s}_sup_deg`] = gr(`${sp}_${s}_sup_deg`);
+          out[`${s}_sup_pat`] = gv(`${sp}_${s}_sup_pat`);
+          out[`${s}_lat_deg`] = gr(`${sp}_${s}_lat_deg`);
+          out[`${s}_lat_pat`] = gv(`${sp}_${s}_lat_pat`);
+        }
+        return out;
+      };
+      return {
+        observer_number: i + 1,
+        id:             gv(`${p}_id`),
+        datetime:       gv(`${p}_datetime`),
+        confidence:     gv(`${p}_confidence`),
+        time_to_score:  gv(`${p}_time_to_score`),
+        session1_vote:  vote(1),
+        session2_vote:  vote(2),
+      };
+    });
+  }
+
+  // Initialise with 2 default observers
+  addObserver();
+  addObserver();
+
+  /* ── Init nav ───────────────────────────────────────────── */
+  document.getElementById('pregnancy_field').style.display = 'none';
+  updateNav();
+</script>
+</body>
+</html>
